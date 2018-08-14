@@ -25,9 +25,6 @@ scenario:
 
     - name: Second Check
       actions:
-        - setContext:
-            from: "{{ 'now' | date('l') }}"
-            to: current_day_of_the_week
         - compareContext:
             var: '{{ current_day_of_the_week }}'
             is_equal: 'Tuesday'
@@ -37,9 +34,6 @@ scenario:
 
     - name: Third Check
       actions:
-        - setContext:
-            from: "{{ 'now' | date('l') }}"
-            to: current_day_of_the_week
         - compareContext:
             var: '{{ current_day_of_the_week }}'
             is_equal: 'Wednesday'
@@ -49,9 +43,6 @@ scenario:
 
     - name: Fourth Check
       actions:
-        - setContext:
-            from: "{{ 'now' | date('l') }}"
-            to: current_day_of_the_week
         - compareContext:
             var: '{{ current_day_of_the_week }}'
             is_equal: 'Thursday'
@@ -61,9 +52,6 @@ scenario:
 
     - name: Fifth Check
       actions:
-        - setContext:
-            from: "{{ 'now' | date('l') }}"
-            to: current_day_of_the_week
         - compareContext:
             var: '{{ current_day_of_the_week }}'
             is_equal: 'Friday'
@@ -73,9 +61,6 @@ scenario:
 
     - name: Sixth Check
       actions:
-        - setContext:
-            from: "{{ 'now' | date('l') }}"
-            to: current_day_of_the_week
         - compareContext:
             var: '{{ current_day_of_the_week }}'
             is_equal: 'Saturday'
@@ -85,9 +70,6 @@ scenario:
 
     - name: Seventh Check
       actions:
-        - setContext:
-            from: "{{ 'now' | date('l') }}"
-            to: current_day_of_the_week
         - compareContext:
             var: '{{ current_day_of_the_week }}'
             is_equal: 'Sunday'
