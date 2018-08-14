@@ -1,0 +1,189 @@
+---
+include:
+  - intents.yml
+  - slots.yml
+scenario:
+  name: 'BotTalk Tip of the Day'
+  locale: en-US
+  category: EDUCATION_AND_REFERENCE
+  invocation: 'BotTalk Tip of the Day'
+  examplePhrases:
+    - 'Alexa, open BotTalk Tip of the Day'
+  steps:
+
+    - name: First Check
+      actions:
+        - setContext:
+            from: "{{ 'now' | date('l') }}"
+            to: current_day_of_the_week
+        - compareContext:
+            var: '{{ current_day_of_the_week }}'
+            is_equal: 'Monday'
+      next:
+       'true': Monday Step
+       'false': Second Check
+
+    - name: Second Check
+      actions:
+        - setContext:
+            from: "{{ 'now' | date('l') }}"
+            to: current_day_of_the_week
+        - compareContext:
+            var: '{{ current_day_of_the_week }}'
+            is_equal: 'Tuesday'
+      next:
+       'true': Tuesday Step
+       'false': Third Check
+
+    - name: Third Check
+      actions:
+        - setContext:
+            from: "{{ 'now' | date('l') }}"
+            to: current_day_of_the_week
+        - compareContext:
+            var: '{{ current_day_of_the_week }}'
+            is_equal: 'Wednesday'
+      next:
+       'true': Wednesday Step
+       'false': Fourth Check
+
+    - name: Fourth Check
+      actions:
+        - setContext:
+            from: "{{ 'now' | date('l') }}"
+            to: current_day_of_the_week
+        - compareContext:
+            var: '{{ current_day_of_the_week }}'
+            is_equal: 'Thursday'
+      next:
+       'true': Wednesday Step
+       'false': Fifth Check
+
+    - name: Fifth Check
+      actions:
+        - setContext:
+            from: "{{ 'now' | date('l') }}"
+            to: current_day_of_the_week
+        - compareContext:
+            var: '{{ current_day_of_the_week }}'
+            is_equal: 'Friday'
+      next:
+       'true': Friday Step
+       'false': Sixth Check
+
+    - name: Sixth Check
+      actions:
+        - setContext:
+            from: "{{ 'now' | date('l') }}"
+            to: current_day_of_the_week
+        - compareContext:
+            var: '{{ current_day_of_the_week }}'
+            is_equal: 'Saturday'
+      next:
+       'true': Saturday Step
+       'false': Seventh Check
+
+    - name: Seventh Check
+      actions:
+        - setContext:
+            from: "{{ 'now' | date('l') }}"
+            to: current_day_of_the_week
+        - compareContext:
+            var: '{{ current_day_of_the_week }}'
+            is_equal: 'Sunday'
+      next:
+       'true': Sunday Step
+       'false': Exit
+
+    - name: Monday Step
+      actions:
+        - sendText: >
+            This is the placeholder for any text you want to send on Monday.
+        - sendCard:
+            title: 'Monday Card'
+            text: >
+              You can also send the cards of course
+            image: "https://bottalk.de/img/bottalk_landing_logo.png"
+      next: Exit
+
+    - name: Tuesday Step
+      actions:
+        - sendText: >
+            This is the placeholder for any text you want to send on Tuesday.
+        - sendCard:
+            title: 'Tuesday Card'
+            text: >
+              You can also send the cards of course
+            image: "https://bottalk.de/img/bottalk_landing_logo.png"
+      next: Exit
+
+    - name: Wednesday Step
+      actions:
+        - sendText: >
+            This is the placeholder for any text you want to send on Wednesday.
+        - sendCard:
+            title: 'Wednesday Card'
+            text: >
+              You can also send the cards of course
+            image: "https://bottalk.de/img/bottalk_landing_logo.png"
+      next: Exit
+
+    - name: Thursday Step
+      actions:
+        - sendText: >
+            This is the placeholder for any text you want to send on Thursday.
+        - sendCard:
+            title: 'Thursday Card'
+            text: >
+              You can also send the cards of course
+            image: "https://bottalk.de/img/bottalk_landing_logo.png"
+      next: Exit
+
+    - name: Friday Step
+      actions:
+        - sendText: >
+            This is the placeholder for any text you want to send on Friday.
+        - sendCard:
+            title: 'Friday Card'
+            text: >
+              You can also send the cards of course
+            image: "https://bottalk.de/img/bottalk_landing_logo.png"
+      next: Exit
+
+    - name: Saturday Step
+      actions:
+        - sendText: >
+            This is the placeholder for any text you want to send on Saturday.
+        - sendCard:
+            title: 'Saturday Card'
+            text: >
+              You can also send the cards of course
+            image: "https://bottalk.de/img/bottalk_landing_logo.png"
+      next: Exit
+
+    - name: Sunday Step
+      actions:
+        - sendText: >
+            This is the placeholder for any text you want to send on Sunday.
+        - sendCard:
+            title: 'Sunday Card'
+            text: >
+              You can also send the cards of course
+            image: "https://bottalk.de/img/bottalk_landing_logo.png"
+      next: Exit
+
+    - name: Exit
+      entrypoint: true
+      actions:
+        - sendText: 'Here is a bye-bye text'
+
+    - name: Help
+      entrypoint: true
+      actions:
+        - sendText: 'Here is the help text'
+        - getInput:
+      next:
+        AMAZON.CancelIntent: Exit
+        AMAZON.StopIntent: Exit
+        AMAZON.HelpIntent: Help
+        ok_great: First Check
