@@ -42,7 +42,7 @@ Just edit the content of the ***sendText*** and/or ***sendCard*** action - and y
   next: Exit
 ```
 
-## [House Guest]((https://github.com/bottalk/templates/tree/master/house-guest))
+## [House Guest](https://github.com/bottalk/templates/tree/master/house-guest)
 
 Are you an Airbnb host? Or are your friends or relatives just staying over? In any case - use can create and publish (!) this scenario as an Alexa Skill / Google Action to help your guests feel just like at home.
 
