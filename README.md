@@ -68,7 +68,7 @@ How to customize the scenario?
 
 1. Edit the ```slots.yml``` file in order to add things your guests might want to find or do:
 
-```
+```yaml
 thing_to_find:
   - 'TV remote'
   - 'WiFi password'
@@ -79,7 +79,7 @@ thing_to_do:
 
 2. Edit the ```intetns.yml``` file and come up with the variations of how your guests could ask Alexa / Google Home for instructions:
 
-```
+```yaml
 where_is:
   - 'Where is the {thing_to_find}'
 how_do_i:
@@ -93,7 +93,7 @@ contact:
 
 3. Edit the ```main.yml``` file to provide the answers to the guests' requests. For instance, that's how "How do I..." step looks like:
 
-```
+```yaml
 - name: How Do I Step
   actions:
     - sendText: >
