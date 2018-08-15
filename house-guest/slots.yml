@@ -1,0 +1,8 @@
+---
+slots:
+  thing_to_find:
+    - 'TV remote'
+    - 'WiFi password'
+  thing_to_do:
+    - 'lock the door'
+    - 'turn on the air conditioner'

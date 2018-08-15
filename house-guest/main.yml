@@ -1,0 +1,102 @@
+---
+include:
+  - intents.yml
+  - slots.yml
+scenario:
+  name: 'House Guest'
+  locale: en-US
+  category: EDUCATION_AND_REFERENCE
+  invocation: 'House Guest'
+  examplePhrases:
+    - 'Alexa, open House Guest'
+  steps:
+
+    - name: Initial step
+      actions:
+        - sendText: >
+            Welcome to our home! Are you looking for something? Just ask!
+            For example:
+            "Where is TV remote?" or
+            "How do I lock the door?" or
+            "What is the number of the host?"
+        - sendCard:
+            title: House Guest
+            text: >
+              Welcome to our home! Are you looking for something? Just ask! {{ '\n' | raw }} {{ '\n' | raw }}
+              For example: {{ '\n' | raw }}
+              - "Where is TV remote?" {{ '\n' | raw }}
+              - "How do I lock the door?" {{ '\n' | raw }}
+              -  "What is the number of the host?" {{ '\n' | raw }}
+            image: 'https://bottalk.de/img/bottalk_landing_logo.png'
+        - getInput:
+      next:
+        where_is: Where Is Step
+        how_do_i: How Do I Step
+        contact: Contact Step
+        AMAZON.CancelIntent: Exit
+        AMAZON.StopIntent: Exit
+        AMAZON.HelpIntent: Help
+
+    - name: Where Is Step
+      actions:
+        - sendText: >
+            {% if thing_to_find == 'TV remote' %}
+              The TV remote is on the couch - right next to the dog.
+            {% elseif thing_to_find == 'WiFi password' %}
+              The WiFi password is <say-as interpret-as="characters">xT43v3yz</say-as>.
+            {% endif %}
+        - sendText: >
+            Is there anything else I can do for you?
+        - getInput:
+      next:
+        where_is: Where Is Step
+        how_do_i: How Do I Step
+        contact: Contact Step
+
+    - name: How Do I Step
+      actions:
+        - sendText: >
+            {% if thing_to_do == 'lock the door' %}
+              You can lock the door with the digital key, using your mobile phone.
+              Yes, we're very forward-thinking house.
+            {% elseif thing_to_do == 'turn on the air conditioner' %}
+              To turn on the air conditioner just use the remote on the wall.
+            {% endif %}
+        - sendText: >
+            Is there anything else I can do for you?
+        - getInput:
+      next:
+        where_is: Where Is Step
+        how_do_i: How Do I Step
+        contact: Contact Step
+
+    - name: Contact Step
+      actions:
+        - sendText: >
+            Andrew's number is <say-as interpret-as="telephone">5555555</say-as>.
+        - sendText: >
+            Is there anything else I can do for you?
+        - getInput:
+      next:
+        where_is: Where Is Step
+        how_do_i: How Do I Step
+        contact: Contact Step
+
+    - name: Exit
+      entrypoint: true
+      actions:
+        - sendText: 'Here is a bye-bye text'
+
+    - name: Help
+      entrypoint: true
+      actions:
+        - sendText: >
+            Where to find things? Just ask "Where is the TV remote?"
+            Contact info? Just say "Call the host"
+            How to do things? Just ask "How do I lock the door?"
+        - getInput:
+      next:
+        where_is: Where Is Step
+        how_do_i: How Do I Step
+        contact: Contact Step
+        ok_great: Initial step

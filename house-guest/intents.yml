@@ -1,0 +1,15 @@
+---
+intents:
+  ok_great:
+    - 'OK'
+    - 'Great'
+  where_is:
+    - 'What is the {thing_to_find}'
+    - 'Where is the {thing_to_find}'
+  how_do_i:
+    - 'How do I {thing_to_do}'
+  contact:
+    - 'Contact'
+    - 'Contact information of the host'
+    - 'Call the host'
+    - 'What is the number of the host'
