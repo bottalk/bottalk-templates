@@ -47,7 +47,7 @@ scenario:
             var: '{{ current_day_of_the_week }}'
             is_equal: 'Thursday'
       next:
-       'true': Wednesday Step
+       'true': Thursday Step
        'false': Fifth Check
 
     - name: Fifth Check
