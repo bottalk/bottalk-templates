@@ -114,9 +114,7 @@ contact:
 
 ## [Trivia Game](https://github.com/bottalk/templates/tree/master/trivia-game)
 
-With this template you can build any kind of triva game you like. In this example we play the movies trivia.
-
-Are you an Airbnb host? Or are your friends or relatives just staying over? In any case - use can create and publish (!) this scenario as an Alexa Skill / Google Action to help your guests feel just like at home.
+With this template you can build any kind of trivia game you like. In this example we play the movies trivia.
 
 Dialogue example:
 
