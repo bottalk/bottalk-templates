@@ -1,0 +1,121 @@
+---
+include:
+  - intents.yml
+  - slots.yml
+scenario:
+  name: 'Trivia Template'
+  locale: en-US
+  category: EDUCATION_AND_REFERENCE
+  invocation: 'Trivia Template'
+  examplePhrases:
+    - 'Alexa, open Trivia Template'
+  steps:
+
+    - name: Initial step
+      actions:
+        - sendText: >
+            <audio src="https://smarthaustech.de/wp-content/uploads/2018/08/bottalk-trivia-template-tata-long.mp3" />
+            Welcome to the most insightful movies trivia game in the whole wide world!
+
+            Do you want to start a game?
+        - getInput:
+      next:
+        yes_sure: First Question
+        AMAZON.CancelIntent: Exit
+        AMAZON.StopIntent: Exit
+        AMAZON.HelpIntent: Help
+
+    - name: First Question
+      actions:
+        - sendCard:
+            title: BotTalk Trivia Template
+            text: >
+                Which movie is the quote "You can’t handle the truth!" from? {{ '\n\n' | raw }}
+
+                - A League of Their Own {{ '\n' | raw }}
+                - The Sixth Sense {{ '\n' | raw }}
+                - A Few Good Men? {{ '\n' | raw }}
+            image: 'https://bottalk.de/img/bottalk_landing_logo.png'
+        - sendText: >
+            Round One! Movie Quotes!
+            I give you the quote, you give me movie it came from.
+            The quote: <break time="1s"/>  “You can’t handle the truth!”
+            Which movie is this?
+            A League of Their Own
+            The Sixth Sense
+            or
+            A Few Good Men?
+        - getInput:
+      next:
+        first_question_answer: Check First Question
+
+    - name: Check First Question
+      actions:
+        - compareContext:
+            var: '{{ first_question_answer_movie | lower }}'
+            is_equal: 'a few good men'
+      next:
+        'true': First Question Correct
+        'false': First Question Incorrect
+
+    - name: First Question Correct
+      actions:
+        - setContext:
+            from: '1'
+            to: 'current_score'
+        - sendText: >
+            <audio src="https://smarthaustech.de/wp-content/uploads/2018/08/bottalk-trivia-template-correct.mp3" />
+            That's correct!
+
+            The iconic 1992 film was nominated for four Academy Awards and five Golden Globe Awards.
+            Jack Nicholson was paid $5 million for only ten days of work, and he only appeared in four scenes in the entire movie.
+            His famous courtroom meltdown only lasted for 21 seconds.
+
+            Your current score is {{ current_score }} point.
+
+            Are you ready for the second round?
+        - getInput:
+      next:
+        yes_sure: Second Question
+        not_now: Exit
+
+    - name: First Question Incorrect
+      actions:
+        - setContext:
+            from: '0'
+            to: 'current_score'
+        - sendText: >
+            <audio src="https://smarthaustech.de/wp-content/uploads/2018/08/bottalk-trivia-incorrect.mp3" />
+            That was incorrect. The correct answer is: "A Few Good Men"
+
+            Your current score is {{ current_score }} points.
+
+            <break time="1s"/>
+
+            Are you ready for the second round?
+        - getInput:
+      next:
+        yes_sure: Second Question
+        not_now: Exit
+
+    - name: Second Question
+      actions:
+        - sendText: >
+            Here is the second question. Just come up with some really cool stuff.
+            Don't forget to put your answers in intents and slots!
+      next: Exit
+
+    - name: Exit
+      entrypoint: true
+      actions:
+        - sendText: >
+            See you next time!
+            <audio src="https://smarthaustech.de/wp-content/uploads/2018/08/bottalk-trivia-finish.mp3" />
+
+    - name: Help
+      entrypoint: true
+      actions:
+        - sendText: 'Here is the help text'
+        - getInput:
+      next:
+        yes_sure: Initial step

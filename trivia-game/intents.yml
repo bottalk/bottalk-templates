@@ -1,0 +1,19 @@
+---
+intents:
+  yes_sure:
+    - 'OK'
+    - 'Great'
+    - 'Yes'
+    - 'Sure'
+    - 'Of course'
+    - 'Lets go'
+    - 'yes sure'
+  not_now:
+    - 'not now'
+    - 'not really'
+    - 'nope'
+    - 'no'
+    - 'next time'
+  first_question_answer:
+    - '{first_question_answer_movie}'
+    - 'The name of the movie was {first_question_answer_movie}'
