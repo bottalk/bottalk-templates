@@ -141,9 +141,7 @@ Dialogue example:
 
 > **Alexa**:  [Audio Effect]
             That's correct!
-
-            Your current score is {{ current_score }} point.
-
+            Your current score is 1 point.
             Are you ready for the second round?
 
 ### How to create your own trivia game?
