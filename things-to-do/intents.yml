@@ -9,5 +9,20 @@ intents:
     - 'i want to watch some movies'
     - 'what movies can i watch'
     - 'what is on netflix'
+  dinner_intent:
+    - 'what to cook for dinner'
+    - 'what to cook today'
+    - 'dinner ideas'
+    - 'dinner healthy'
+    - 'what should i cook for dinner'
+    - 'what should i cook today'
+    - 'what can i cook today for dinner'
+    - 'give me some dinner ideas'
+    - 'what would you cook for dinner today'
+  errands_intent: 
+    - 'what are the top errands'
+    - 'what errands others do'
+    - 'what errands to run'
+    - 'what errands others run'
   choose_category: 
     - '{category_name}'

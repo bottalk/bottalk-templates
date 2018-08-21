@@ -69,12 +69,14 @@ scenario:
         - getInput:
       next:
         movies_intent: Check If Category Is Movies
+        errands_intent:  Check If Category Is Errands
+        dinner_intent: Check If Category Is Dinner
         choose_category: Check If Category Is Movies
         ok: Check If Category Is Errands
       
     - name: Check If Category Is Errands
       entrypoint: true
-      when: 'category_name == "errands"'
+      when: 'category_name == "errands" || lastMessage == "errands_intent"'
       actions: 
         - sendText: >
             Ok, let's check what the other users has been up to this week... 
@@ -101,12 +103,15 @@ scenario:
             I need you to choose the category first: Movies, Errands or Dinner?
         - getInput:
       next: 
+        movies_intent: Check If Category Is Movies
+        errands_intent:  Check If Category Is Errands
+        dinner_intent: Check If Category Is Dinner
         choose_category: Check If Category Is Movies
         ok: Check If Category Is Dinner
       
     - name: Check If Category Is Dinner
       entrypoint: true
-      when: 'category_name == "dinner"'
+      when: 'category_name == "dinner" || lastMessage = "dinner_intent"'
       actions: 
         - sendText: >
             Hm, let me check the top healthy family dinner ideas this week...
@@ -131,8 +136,11 @@ scenario:
             I need you to choose the category first: Movies, Errands or Dinner?
         - getInput:
       next: 
+        movies_intent: Check If Category Is Movies
+        errands_intent:  Check If Category Is Errands
+        dinner_intent: Check If Category Is Dinner
         choose_category: Check If Category Is Movies
-        ok: Check If Category Is Dinner            
+        ok: Check If Category Is Movies            
 
     - name: Exit
       entrypoint: true
