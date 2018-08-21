@@ -1,0 +1,19 @@
+---
+intents:
+  AMAZON.YesIntent:
+  AMAZON.NoIntent:
+  my_name_is:
+    - 'My name is {name}'
+    - '{name}'
+  forget_me:
+    - 'forget me'
+  catch_all:
+    - 'bla bla bla'
+    - 'fish big go draw'
+    - 'picture andreas drink'
+    - 'much coach trax'
+    - 'six van dan can tan'
+    - 'andrei kirill govoril till'
+    - 'the enda fow mow cow drill'
+    - 'no go do do no no do wow'
+   
