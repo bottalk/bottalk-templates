@@ -24,7 +24,7 @@ scenario:
             title: Things to Do
             text: >
               Welcome to Things to Do! 
-              I can help you choose what to do next. Just pick a cateogory. 
+              I can help you choose what to do next. Just pick a category. 
               What will it be?  {{ '\n' | raw }} {{ '\n' | raw }}
               
               - Movies {{ '\n' | raw }}
