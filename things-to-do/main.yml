@@ -45,6 +45,7 @@ scenario:
       when: 'category_name == "movies" || lastMessage == "movies_intent"'
       actions: 
         - sendText: >
+            {{ category_name }} and {{ lastMessage }}
             Hm, let's see... The top movies on NetFlix this week are:
             
             The Dark Knight by Christopher Nolan, 
@@ -56,6 +57,8 @@ scenario:
         - sendCard:
             title: Top Movies This Week
             text: >
+              {{ category_name }} and {{ lastMessage }}
+              
               - The Dark Knight by Christopher Nolan {{ '\n' | raw }}
               - Star Wars: The Last Jedi by Rian Johnson {{ '\n' | raw }}
               - Set It Up by Claire Scanlon {{ '\n' | raw }}
@@ -79,6 +82,8 @@ scenario:
       when: 'category_name == "errands" || lastMessage == "errands_intent"'
       actions: 
         - sendText: >
+            {{ category_name }} and {{ lastMessage }}
+            
             Ok, let's check what the other users has been up to this week... 
             The top errands this week are:
             
@@ -111,9 +116,11 @@ scenario:
       
     - name: Check If Category Is Dinner
       entrypoint: true
-      when: 'category_name == "dinner" || lastMessage = "dinner_intent"'
+      when: 'category_name == "dinner" || lastMessage == "dinner_intent"'
       actions: 
         - sendText: >
+            {{ category_name }} and {{ lastMessage }}
+            
             Hm, let me check the top healthy family dinner ideas this week...
             
             Ribbony Prawns and Spaghetti,
