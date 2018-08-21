@@ -1,0 +1,150 @@
+---
+include:
+  - intents.yml
+  - slots.yml
+scenario:
+  name: 'What To Do'
+  locale: en-US
+  category: EDUCATION_AND_REFERENCE
+  invocation: 'What To Do'
+  examplePhrases:
+    - 'Alexa, open what to do'
+  steps:
+
+    - name: Initial step
+      actions:
+        - sendText: >
+            Welcome to Things to Do! 
+            I can help you choose what to do next. Just pick a category. 
+            What will it be? Movies, Errands or Dinner?
+        - reprompt: >
+            In order for me to suggest what you might wanna do, 
+            I need you to choose the category first: Movies, Errands or Dinner?
+        - sendCard:
+            title: Things to Do
+            text: >
+              Welcome to Things to Do! 
+              I can help you choose what to do next. Just pick a cateogory. 
+              What will it be?  {{ '\n' | raw }} {{ '\n' | raw }}
+              
+              - Movies {{ '\n' | raw }}
+              - Errands {{ '\n' | raw }}
+              - Dinner {{ '\n' | raw }}
+              
+            image: 'https://bottalk.de/img/bottalk_landing_logo.png'
+        - getInput:
+      next:
+        movies_intent: Check If Category Is Movies
+        choose_category: Check If Category Is Movies
+        AMAZON.CancelIntent: Exit
+        AMAZON.StopIntent: Exit
+        AMAZON.HelpIntent: Help
+
+    - name: Check If Category Is Movies
+      entrypoint: true
+      when: 'category_name == "movies" || lastMessage == "movies_intent"'
+      actions: 
+        - sendText: >
+            Hm, let's see... The top movies on NetFlix this week are:
+            
+            The Dark Knight by Christopher Nolan, 
+            Star Wars: The Last Jedi by Rian Johnson, 
+            Set It Up by Claire Scanlon and
+            Ex Machina by Nicholas Stoller
+            
+            What do you want to do next?
+        - sendCard:
+            title: Top Movies This Week
+            text: >
+              - The Dark Knight by Christopher Nolan {{ '\n' | raw }}
+              - Star Wars: The Last Jedi by Rian Johnson {{ '\n' | raw }}
+              - Set It Up by Claire Scanlon {{ '\n' | raw }}
+              - Ex Machina by Nicholas Stoller {{ '\n' | raw }} {{ '\n' | raw }}
+              
+              Icon by http://www.designbolts.com
+            image: 'https://smarthaustech.de/wp-content/uploads/2018/08/Film-icon.png'
+        - reprompt: >
+            In order for me to suggest what you might wanna do, 
+            I need you to choose the category first: Movies, Errands or Dinner?
+        - getInput:
+      next:
+        movies_intent: Check If Category Is Movies
+        choose_category: Check If Category Is Movies
+        ok: Check If Category Is Errands
+      
+    - name: Check If Category Is Errands
+      entrypoint: true
+      when: 'category_name == "errands"'
+      actions: 
+        - sendText: >
+            Ok, let's check what the other users has been up to this week... 
+            The top errands this week are:
+            
+            wash clothes, 
+            post office, 
+            pay bills and 
+            groceries shopping
+            
+            What do you want to do next?
+        - sendCard:
+            title: Top Errands This Week
+            text: >
+              - Wash clothes {{ '\n' | raw }}
+              - Post office {{ '\n' | raw }}
+              - Pay bills {{ '\n' | raw }}
+              - Groceries shopping {{ '\n' | raw }} {{ '\n' | raw }}
+              
+              Icon by http://www.kameleon.pics
+            image: 'https://smarthaustech.de/wp-content/uploads/2018/08/Checklist-icon.png'
+        - reprompt: >
+            In order for me to suggest what you might wanna do, 
+            I need you to choose the category first: Movies, Errands or Dinner?
+        - getInput:
+      next: 
+        choose_category: Check If Category Is Movies
+        ok: Check If Category Is Dinner
+      
+    - name: Check If Category Is Dinner
+      entrypoint: true
+      when: 'category_name == "dinner"'
+      actions: 
+        - sendText: >
+            Hm, let me check the top healthy family dinner ideas this week...
+            
+            Ribbony Prawns and Spaghetti,
+            Rainbow Pepper Couscous,
+            Chicken Paillards With Herb-Tomato Salad and
+            Egg-and-Kimchi Rice Bowls
+            
+             What do you want to do next?
+        - sendCard:
+            title: Top Healty Dinner Ideas
+            text: >
+              - Ribbony Prawns and Spaghetti {{ '\n' | raw }}
+              - Rainbow Pepper Couscous {{ '\n' | raw }}
+              - Chicken Paillards With Herb-Tomato Salad {{ '\n' | raw }}
+              - Egg-and-Kimchi Rice Bowls {{ '\n' | raw }} {{ '\n' | raw }}
+              
+            image: 'https://smarthaustech.de/wp-content/uploads/2018/08/dish-2-icon.png'
+        - reprompt: >
+            In order for me to suggest what you might wanna do, 
+            I need you to choose the category first: Movies, Errands or Dinner?
+        - getInput:
+      next: 
+        choose_category: Check If Category Is Movies
+        ok: Check If Category Is Dinner            
+
+    - name: Exit
+      entrypoint: true
+      actions:
+        - sendText: 'Ok, see you next time!'
+
+    - name: Help
+      entrypoint: true
+      actions:
+        - sendText: >
+            I can help you make better choices regarding the movies your watch, 
+            the dinner you cook or the errands you do. What will it be?
+        - getInput:
+      next:
+        choose_category: Check If Category Is Movies

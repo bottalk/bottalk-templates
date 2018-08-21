@@ -1,0 +1,13 @@
+---
+intents:
+  movies_intent:
+    - 'what movies should i watch'
+    - 'what are the top movies'
+    - 'best movies'
+    - 'what can i watch'
+    - 'i want to watch something'
+    - 'i want to watch some movies'
+    - 'what movies can i watch'
+    - 'what is on netflix'
+  choose_category: 
+    - '{category_name}'

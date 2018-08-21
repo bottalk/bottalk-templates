@@ -1,0 +1,6 @@
+---
+slots:
+  category_name:
+    - 'movies'
+    - 'errands'
+    - 'dinner'
