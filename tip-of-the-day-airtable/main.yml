@@ -21,21 +21,17 @@ scenario:
         - set: " current_day_of_the_week = 'now' | date('l') "
         - getUrl: 
             url: "https://api.airtable.com/v0/appJfjtLDkV5ipvGI/Tip%20of%20the%20weekday?api_key=keydf8Uea7Ejp72ZR&filterByFormula=AND(day='{{ current_day_of_the_week }}')"
-
-        - set: ' textToSpeech = urlResponse.records.0.fields.textToSpeech | replace({"\"": ""}) '
-        - set: ' cardTitle = urlResponse.records.0.fields.cardTitle | replace({"\"": ""}) '
-        - set: ' cardText = urlResponse.records.0.fields.cardText | replace({"\"": ""}) '
-        - set: ' cardImage = urlResponse.records.0.fields.cardImage | replace({"\"": ""}) '        
+        - set: ' tip = urlResponse.records.0.fields '
       next: Read Fact
       
     - name: 'Read Fact'
       actions:
-        - sendText: 'Today is {{ current_day_of_the_week }}. {{ textToSpeech }} '
+        - sendText: 'Today is {{ current_day_of_the_week }}. {{ tip.textToSpeech  | replace({"\"": ""}) }} '
         #    ... and a visual card.       
         - sendCard:
-            title:  '{{ cardTitle }}'
-            text:   '{{ cardText }}'
-            image:  '{{ cardImage }}'
+            title:  '{{ tip.cardTitle  | replace({"\"": ""}) }}'
+            text:   '{{ tip.cardText  | replace({"\"": ""}) }}'
+            image:  '{{ tip.cardImage  | replace({"\"": ""}) }}'
       next: 
         AMAZON.CancelIntent: Exit
         AMAZON.StopIntent: Exit
