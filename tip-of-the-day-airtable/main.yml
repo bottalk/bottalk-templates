@@ -1,0 +1,58 @@
+---
+include:
+  - intents.yml
+  - slots.yml
+scenario:
+  invocation: 'Tip of the Day'
+  name: 'BotTalk Tip of the Day'
+  locale: en-US
+  category: EDUCATION_AND_REFERENCE
+  examplePhrases:
+    - 'Alexa, open Tip of the Day'
+  steps:
+  
+    - name: 'Initial step'
+      actions:
+        - sendText: '{{ random(["Hey","Hi","Hello"]) }}! '
+      next: Api Request
+      
+    - name: 'Api Request'
+      actions:
+        - set: " current_day_of_the_week = 'now' | date('l') "
+        - getUrl: 
+            url: "https://api.airtable.com/v0/appJfjtLDkV5ipvGI/Tip%20of%20the%20weekday?api_key=keydf8Uea7Ejp72ZR&filterByFormula=AND(day='{{ current_day_of_the_week }}')"
+
+        - set: ' textToSpeech = urlResponse.records.0.fields.textToSpeech | replace({"\"": ""}) '
+        - set: ' cardTitle = urlResponse.records.0.fields.cardTitle | replace({"\"": ""}) '
+        - set: ' cardText = urlResponse.records.0.fields.cardText | replace({"\"": ""}) '
+        - set: ' cardImage = urlResponse.records.0.fields.cardImage | replace({"\"": ""}) '        
+      next: Read Fact
+      
+    - name: 'Read Fact'
+      actions:
+        - sendText: 'Today is {{ current_day_of_the_week }}. {{ textToSpeech }} '
+        #    ... and a visual card.       
+        - sendCard:
+            title:  '{{ cardTitle }}'
+            text:   '{{ cardText }}'
+            image:  '{{ cardImage }}'
+      next: 
+        AMAZON.CancelIntent: Exit
+        AMAZON.StopIntent: Exit
+        AMAZON.HelpIntent: help step
+     
+  
+#    ======    This step is needed for Amazon     
+    - name: Exit
+      entrypoint: true
+      actions: 
+        - sendText: '{{ random(["Alrighty then, see ya!", "You know where to find me, bye!", "ok dokey!", "See ya"]) }}' 
+#    ======    This step is needed for Amazon        
+    - name: help step
+      entrypoint: true
+      actions:
+        - sendText: 'I am here to help! You can ask for next fact or exit anytime. Would you like to hear next fact?'
+        - getInput: 
+      next: 
+        yes_next: Initial step
+        no_thanks: Exit      
