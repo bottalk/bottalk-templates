@@ -3,169 +3,85 @@ include:
   - intents.yml
   - slots.yml
 scenario:
+  invocation: 'Tip of the Day'
   name: 'BotTalk Tip of the Day'
   locale: en-US
   category: EDUCATION_AND_REFERENCE
-  invocation: 'BotTalk Tip of the Day'
   examplePhrases:
-    - 'Alexa, open BotTalk Tip of the Day'
+    - 'Alexa, open Tip of the Day'
   steps:
-
-    - name: First Check
+    - name: Initial step
       actions:
-        - setContext:
-            from: "{{ 'now' | date('l') }}"
-            to: current_day_of_the_week
-        - compareContext:
-            var: '{{ current_day_of_the_week }}'
-            is_equal: 'Monday'
-      next:
-       'true': Monday Step
-       'false': Second Check
+        - set: " current_day_of_the_week = 'now' | date('N') - 1 " # The number of the current day in the week 1 for Monday, 7 for Sunday
+        - set: " tips = [
 
-    - name: Second Check
-      actions:
-        - compareContext:
-            var: '{{ current_day_of_the_week }}'
-            is_equal: 'Tuesday'
-      next:
-       'true': Tuesday Step
-       'false': Third Check
-
-    - name: Third Check
-      actions:
-        - compareContext:
-            var: '{{ current_day_of_the_week }}'
-            is_equal: 'Wednesday'
-      next:
-       'true': Wednesday Step
-       'false': Fourth Check
-
-    - name: Fourth Check
-      actions:
-        - compareContext:
-            var: '{{ current_day_of_the_week }}'
-            is_equal: 'Thursday'
-      next:
-       'true': Wednesday Step
-       'false': Fifth Check
-
-    - name: Fifth Check
-      actions:
-        - compareContext:
-            var: '{{ current_day_of_the_week }}'
-            is_equal: 'Friday'
-      next:
-       'true': Friday Step
-       'false': Sixth Check
-
-    - name: Sixth Check
-      actions:
-        - compareContext:
-            var: '{{ current_day_of_the_week }}'
-            is_equal: 'Saturday'
-      next:
-       'true': Saturday Step
-       'false': Seventh Check
-
-    - name: Seventh Check
-      actions:
-        - compareContext:
-            var: '{{ current_day_of_the_week }}'
-            is_equal: 'Sunday'
-      next:
-       'true': Sunday Step
-       'false': Exit
-
-    - name: Monday Step
-      actions:
-        - sendText: >
-            This is the placeholder for any text you want to send on Monday.
+#    ======    MONDAY TIP  ===== 
+                           { 'textToSpeech': 'This is the placeholder for any text you want to send on Monday.',
+                              cardTitle: 'Monday Card',
+                              cardText: 'You can also send the cards of course',
+                              cardImage:  'https://bottalk.de/img/bottalk_landing_logo.png'
+                           },
+#    ======    Tuesday TIP  =====                            
+                           { 'textToSpeech': 'This is the placeholder for any text you want to send on Tuesday.',
+                              cardTitle: 'Tuesday Card',
+                              cardText: 'You can also send the cards of course',
+                              cardImage:  'https://bottalk.de/img/bottalk_landing_logo.png'                              
+                           },
+#    ======    Wednesday TIP  =====                                                       
+                           { 'textToSpeech': 'This is the placeholder for any text you want to send on Wednesday.', 
+                              cardTitle: 'Wednesday Card',
+                              cardText: 'You can also send the cards of course',
+                              cardImage:  'https://bottalk.de/img/bottalk_landing_logo.png'                              
+                           },
+#    ======    Thursday TIP  =====                           
+                           { 'textToSpeech': 'This is the placeholder for any text you want to send on Thursday.', 
+                              cardTitle: 'Thursday Card',
+                              cardText: 'You can also send the cards of course',
+                              cardImage:  'https://bottalk.de/img/bottalk_landing_logo.png'                              
+                           },
+#    ======    Friday TIP  =====                                                      
+                           { 'textToSpeech': 'This is the placeholder for any text you want to send on Friday.', 
+                              cardTitle: 'Friday Card',
+                              cardText: 'You can also send the cards of course',
+                              cardImage:  'https://bottalk.de/img/bottalk_landing_logo.png'                              
+                           },
+#    ======    Saturday TIP  =====                                                                                 
+                           { 'textToSpeech': 'This is the placeholder for any text you want to send on Saturday.', 
+                              cardTitle: 'Saturday Card',
+                              cardText: 'You can also send the cards of course', 
+                              cardImage:  'https://bottalk.de/img/bottalk_landing_logo.png'                              
+                           },
+#    ======    Sunday TIP  =====                                
+                           { 'textToSpeech': 'This is the placeholder for any text you want to send on Sunday.', 
+                              cardTitle: 'Sunday Card',
+                              cardText: 'You can also send the cards of course',
+                              cardImage:  'https://bottalk.de/img/bottalk_landing_logo.png'                              
+                           }                           
+                        ] "  
+#    ======    Send the text response ...                        
+        - sendText: '{{ tips[current_day_of_the_week].textToSpeech }}'
+#    ... and a visual card.       
         - sendCard:
-            title: 'Monday Card'
-            text: >
-              You can also send the cards of course
-            image: "https://bottalk.de/img/bottalk_landing_logo.png"
-      next: Exit
-
-    - name: Tuesday Step
-      actions:
-        - sendText: >
-            This is the placeholder for any text you want to send on Tuesday.
-        - sendCard:
-            title: 'Tuesday Card'
-            text: >
-              You can also send the cards of course
-            image: "https://bottalk.de/img/bottalk_landing_logo.png"
-      next: Exit
-
-    - name: Wednesday Step
-      actions:
-        - sendText: >
-            This is the placeholder for any text you want to send on Wednesday.
-        - sendCard:
-            title: 'Wednesday Card'
-            text: >
-              You can also send the cards of course
-            image: "https://bottalk.de/img/bottalk_landing_logo.png"
-      next: Exit
-
-    - name: Thursday Step
-      actions:
-        - sendText: >
-            This is the placeholder for any text you want to send on Thursday.
-        - sendCard:
-            title: 'Thursday Card'
-            text: >
-              You can also send the cards of course
-            image: "https://bottalk.de/img/bottalk_landing_logo.png"
-      next: Exit
-
-    - name: Friday Step
-      actions:
-        - sendText: >
-            This is the placeholder for any text you want to send on Friday.
-        - sendCard:
-            title: 'Friday Card'
-            text: >
-              You can also send the cards of course
-            image: "https://bottalk.de/img/bottalk_landing_logo.png"
-      next: Exit
-
-    - name: Saturday Step
-      actions:
-        - sendText: >
-            This is the placeholder for any text you want to send on Saturday.
-        - sendCard:
-            title: 'Saturday Card'
-            text: >
-              You can also send the cards of course
-            image: "https://bottalk.de/img/bottalk_landing_logo.png"
-      next: Exit
-
-    - name: Sunday Step
-      actions:
-        - sendText: >
-            This is the placeholder for any text you want to send on Sunday.
-        - sendCard:
-            title: 'Sunday Card'
-            text: >
-              You can also send the cards of course
-            image: "https://bottalk.de/img/bottalk_landing_logo.png"
-      next: Exit
-
-    - name: Exit
-      entrypoint: true
-      actions:
-        - sendText: 'Here is a bye-bye text'
-
-    - name: Help
-      entrypoint: true
-      actions:
-        - sendText: 'Here is the help text'
-        - getInput:
-      next:
+            title:  '{{ tips[current_day_of_the_week].cardTitle }}'
+            text:   '{{ tips[current_day_of_the_week].cardText }}'
+            image:  '{{ tips[current_day_of_the_week].cardImage }}'
+  
+      next: 
+      # we define here some intents, they should be defined to be certified by Amazon
         AMAZON.CancelIntent: Exit
         AMAZON.StopIntent: Exit
-        AMAZON.HelpIntent: Help
-        ok_great: First Check
+        AMAZON.HelpIntent: help step
+#    ======    This step is needed for Amazon     
+    - name: Exit
+      entrypoint: true
+      actions: 
+        - sendText: '{{ random(["Alrighty then, see ya!", "You know where to find me, bye!", "ok dokey!", "See ya"]) }}' 
+#    ======    This step is needed for Amazon        
+    - name: help step
+      entrypoint: true
+      actions:
+        - sendText: 'I am here to help! You can ask for next fact or exit anytime. Would you like to hear next fact?'
+        - getInput: 
+      next: 
+        yes_next: Initial step
+        no_thanks: Exit      
