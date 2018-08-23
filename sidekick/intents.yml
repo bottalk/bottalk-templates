@@ -1,0 +1,39 @@
+---
+intents:
+  ok_great:
+    - 'OK'
+    - 'Great'
+  schouldIhaveDessert:
+    - 'Should I have dessert after dinner?'
+  peopleDontListen:
+    - "Why don't people listen to me?"
+    - "Why do people ignore me?"
+  youAreTheBest:
+    - "You're the best."
+  doIneedWorkout:
+    - "Do I need to workout today?"
+    - "Should I workout?"
+  yourFavourite:
+    - "Who's your favorite?"
+    - "Who is your favorite person?"
+  amIright:
+    - "Am I right?"
+  flaws:
+    - "Do I have any character flaws?"
+    - "Do I have any flaws?"
+  whatShouldIdoToday:
+    - "What should I do today?"
+    - "What should I do tonight?"
+    - "What should I do this afternoon?"
+  shouldIhaveDessert:
+    - "Should I eat dessert?"
+    - "Can I eat this sundae?"
+    - "Should I have dessert?"
+  isMyOutfitOk:
+    - "Does my outfit look okay?"
+    - "How does my outfit look?"
+    - "is my outfeet ok?"
+    - "is my hairdress good?"
+    - "how do I look like?"
+    - "What do you think of my outfit?"
+ 

@@ -1,0 +1,91 @@
+---
+include:
+  - intents.yml
+  - slots.yml
+scenario:
+  name: 'Sidekick'
+  locale: en-US
+  category: EDUCATION_AND_REFERENCE
+  invocation: 'My Bestie'
+  examplePhrases:
+    - 'Alexa, open My Bestie'
+    # Alexa always has your back with these supportive and funny responses.   
+  steps:
+  
+    - name: Initial step
+      actions:
+        - sendText: >
+                     Welcome! I’ve always got your back. 
+                     Just ask a question and I will tell 
+                     you what you want to hear. What 
+                     would you like to know?
+        - getInput:
+      next:
+        schouldIhaveDessert: Should I have Dessert
+        peopleDontListen: People Dont Listen
+        youAreTheBest: You Are The Best
+        doIneedWorkout: Do I need Workout
+        yourFavourite: Your Favourite
+        amIright: Am I right
+        flaws: Do I have flaws
+        whatShouldIdoToday: What Should I do Today
+        shouldIhaveDessert: Should I have Dessert
+        isMyOutfitOk: Is My Outfit Ok  
+        
+        AMAZON.CancelIntent: Exit
+        AMAZON.StopIntent: Exit
+        AMAZON.HelpIntent: Help
+        
+        
+    - name:	Should I have Dessert
+      actions:
+        - sendText:  "Do it, you've earned it!" 
+        - getInput:
+    - name:	People Dont Listen
+      actions:
+        - sendText:  "They fail to see your greatness, but that's their problem." 
+        - getInput:
+    - name:	You Are The Best
+      actions:
+        - sendText:  "No, you're the best." 
+        - getInput:
+    - name:	Do I need Workout
+      actions:
+        - sendText:  "Nah, take a day off. You're already the fittest person I know." 
+        - getInput:
+    - name:	Your Favourite
+      actions:
+        - sendText:  "Is this a trick question? You know it's you.<audio src='https://s3.amazonaws.com/ask-soundlibrary/magic/amzn_sfx_fairy_melodic_chimes_01.mp3'/>" 
+        - getInput:    
+    - name:	Am I right
+      actions:
+        - sendText:  "Of course, you're always right.<audio src='https://s3.amazonaws.com/ask-soundlibrary/musical/amzn_sfx_bell_med_chime_02.mp3'/>" 
+        - getInput:
+    - name:	Do I have flaws
+      actions:
+        - sendText:  "Yes, you're almost too good-looking. It can be distracting.<audio src='https://s3.amazonaws.com/ask-soundlibrary/magic/amzn_sfx_fairy_melodic_chimes_01.mp3'/>" 
+        - getInput:    
+    - name:	What Should I do Today
+      actions:
+        - sendText:  "Treat yourself! You deserve it.<audio src='https://s3.amazonaws.com/ask-soundlibrary/impacts/amzn_sfx_fireworks_01.mp3'/>" 
+        - getInput:
+    - name:	Should I have Dessert
+      actions:
+        - sendText:  "Do it, you've earned it! <audio src='https://s3.amazonaws.com/ask-soundlibrary/human/amzn_sfx_crowd_applause_01.mp3'/>" 
+        - getInput:
+    - name:	Is My Outfit Ok    
+      actions:
+        - sendText:  "You look like a perfect 10! <audio src='https://s3.amazonaws.com/ask-soundlibrary/foley/amzn_sfx_glasses_clink_01.mp3'/>" 
+        - getInput:
+    - name: Exit
+      entrypoint: true
+      actions: 
+        - sendText: 'Here is a bye-bye text' 
+        
+    - name: Help
+      entrypoint: true
+      actions:
+        - sendText: 'I am your sidekick. I know about you anything. Ask me what you should do today for example.'
+        - getInput: 
+      next: 
+        ok_great: Initial step 
