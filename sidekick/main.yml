@@ -21,8 +21,10 @@ scenario:
         - sendText: >
                      Welcome! I’ve always got your back. 
                      Just ask a question and I will tell 
-                     you what you want to hear. What 
-                     would you like to know?
+                     you what you want to hear. Don't know what to ask?
+                     A couple of question you usually start with:
+                     Should I have Dessert? or. Why do people ignore me?
+                     Go ahead!
         - getInput:
       next:
         schouldIhaveDessert: Should I have Dessert
@@ -113,7 +115,7 @@ scenario:
     - name: Fallback
       entrypoint: true
       actions: 
-        - sendText: 'Oh you are so cool!' 
+        - sendText: 'Oh you are so cool! I have nothing to tell you my bestie. You can stop me anytime' 
         - getInput:
       next:
         schouldIhaveDessert: Should I have Dessert
@@ -125,7 +127,7 @@ scenario:
     - name: Help
       entrypoint: true
       actions:
-        - sendText: 'I am your sidekick. I know about you anything. Ask me what you should do today for example.'
+        - sendText: 'I am your sidekick. I have an opinion on your outfit, for example. Ask me or stop me. What do you want to do know?'
         - getInput: 
       next: 
-        ok_great: Initial step 
+        yes_ok: Initial step 

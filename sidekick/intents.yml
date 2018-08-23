@@ -1,8 +1,7 @@
 ---
 intents:
-  ok_great:
-    - 'OK'
-    - 'Great'
+  yes:
+    - 'yes'
   schouldIhaveDessert:
     - 'Should I have dessert after dinner'
   peopleDontListen:
@@ -30,7 +29,14 @@ intents:
     - "Can I eat this sundae"
     - "Should I have dessert"
   AMAZON.FallbackIntent:
-    - "blablabla"
+    - 'bla bla bla'
+    - 'fish big go draw'
+    - 'picture andreas drink'
+    - 'much coach trax'
+    - 'six van dan can tan'
+    - 'andrei kirill govoril till'
+    - 'the enda fow mow cow drill'
+    - 'no go do do no no do wow'
   isMyOutfitOk:
     - "Does my outfit look okay"
     - "How does my outfit look"
