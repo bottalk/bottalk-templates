@@ -111,3 +111,94 @@ contact:
     how_do_i: How Do I Step
     contact: Contact Step
 ```
+
+## [Trivia Game](https://github.com/bottalk/templates/tree/master/trivia-game)
+
+With this template you can build any kind of trivia game you like. In this example we play the movies trivia.
+
+Dialogue example:
+
+> Alexa, open Trivia Template
+
+> **Alexa**: [Audio Effect]
+            Welcome to the most insightful movies trivia game in the whole wide world!
+            Do you want to start a game?
+
+> Yes, sure
+
+> **Alexa**: Round One! Movie Quotes!
+             I give you the quote, you give me movie it came from.
+             The quote: [Pause]  “You can’t handle the truth!”
+             Which movie is this?
+             A League of Their Own
+             The Sixth Sense
+             or
+             A Few Good Men?
+
+> A Few Good Men
+
+> **Alexa**:  [Audio Effect]
+            That's correct!
+            Your current score is 1 point.
+            Are you ready for the second round?
+
+### How to create your own trivia game?
+
+1. To customize the game start with editing the **First Question** step in the main.yml file:
+
+```yaml
+- name: First Question
+  actions:
+    - sendCard:
+        title: BotTalk Trivia Template
+        text: >
+            Which movie is the quote "You can’t handle the truth!" from? {{ '\n\n' | raw }}
+
+            - A League of Their Own {{ '\n' | raw }}
+            - The Sixth Sense {{ '\n' | raw }}
+            - A Few Good Men? {{ '\n' | raw }}
+        image: 'https://bottalk.de/img/bottalk_landing_logo.png'
+    - sendText: >
+        Round One! Movie Quotes!
+        I give you the quote, you give me movie it came from.
+        The quote: <break time="1s"/>  “You can’t handle the truth!”
+        Which movie is this?
+        A League of Their Own
+        The Sixth Sense
+        or
+        A Few Good Men?
+    - getInput:
+  next:
+    first_question_answer: Check First Question
+```
+2. Then move on and add **first_question_answer** in the intents.yml file:
+
+```yaml
+first_question_answer:
+  - '{first_question_answer_movie}'
+  - 'The name of the movie was {first_question_answer_movie}'
+```
+
+3. Finish the step with editing the slots.yml and putting the **first_question_answer_movie** in - that would be your answers
+
+```yaml
+first_question_answer_movie:
+  - a league of their own
+  - the sixth sense
+  - a few good men
+```
+
+4. To check if the answer was correct edit the **Check First Question** step in the main.yml file:
+
+```yaml
+- name: Check First Question
+  actions:
+    - compareContext:
+        var: '{{ first_question_answer_movie | lower }}'
+        is_equal: 'a few good men'
+  next:
+    'true': First Question Correct
+    'false': First Question Incorrect
+```
+
+And just keep building your amazing game from here!
