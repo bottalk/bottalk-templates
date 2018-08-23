@@ -3,3 +3,11 @@ intents:
   ok_great:
     - 'OK'
     - 'Great'
+  no_thanks:
+    - 'No'
+    - 'Nope'
+  yes_next:
+    - 'yes'
+    - 'ok'
+    - 'yes, please'
+    
