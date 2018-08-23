@@ -1,3 +1,4 @@
+# https://blueprints.amazon.com/bp/amzn.ask.bp.8b9d3abb-1d83-4661-a358-57d423db8731?ref_=ask_bp_home_1
 ---
 include:
   - intents.yml
