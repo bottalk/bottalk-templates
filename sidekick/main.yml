@@ -10,10 +10,13 @@ scenario:
   invocation: 'My Bestie'
   examplePhrases:
     - 'Alexa, open My Bestie'
+  reprompts:
+   - "You are the coolest person ever."
+   - "Ask me about your day. Ask me who are the best. Ask me!"
     # Alexa always has your back with these supportive and funny responses.   
   steps:
   
-    - name: Initial step
+    - name: Initial step    
       actions:
         - sendText: >
                      Welcome! I’ve always got your back. 
@@ -33,55 +36,91 @@ scenario:
         shouldIhaveDessert: Should I have Dessert
         isMyOutfitOk: Is My Outfit Ok  
         
+        AMAZON.FallbackIntent: Fallback
         AMAZON.CancelIntent: Exit
         AMAZON.StopIntent: Exit
         AMAZON.HelpIntent: Help
         
         
     - name:	Should I have Dessert
+      entrypoint: true    
       actions:
         - sendText:  "Do it, you've earned it!" 
         - getInput:
+      next:
+        schouldIhaveDessert: Should I have Dessert
     - name:	People Dont Listen
+      entrypoint: true    
       actions:
         - sendText:  "They fail to see your greatness, but that's their problem." 
         - getInput:
+      next:
+        schouldIhaveDessert: Should I have Dessert
     - name:	You Are The Best
+      entrypoint: true    
       actions:
         - sendText:  "No, you're the best." 
         - getInput:
+      next:
+        schouldIhaveDessert: Should I have Dessert
     - name:	Do I need Workout
+      entrypoint: true    
       actions:
         - sendText:  "Nah, take a day off. You're already the fittest person I know." 
         - getInput:
+      next:
+        schouldIhaveDessert: Should I have Dessert
     - name:	Your Favourite
+      entrypoint: true    
       actions:
         - sendText:  "Is this a trick question? You know it's you.<audio src='https://s3.amazonaws.com/ask-soundlibrary/magic/amzn_sfx_fairy_melodic_chimes_01.mp3'/>" 
         - getInput:    
     - name:	Am I right
+      entrypoint: true    
       actions:
         - sendText:  "Of course, you're always right.<audio src='https://s3.amazonaws.com/ask-soundlibrary/musical/amzn_sfx_bell_med_chime_02.mp3'/>" 
         - getInput:
+      next:
+        schouldIhaveDessert: Should I have Dessert
     - name:	Do I have flaws
+      entrypoint: true    
       actions:
         - sendText:  "Yes, you're almost too good-looking. It can be distracting.<audio src='https://s3.amazonaws.com/ask-soundlibrary/magic/amzn_sfx_fairy_melodic_chimes_01.mp3'/>" 
         - getInput:    
+      next:
+        schouldIhaveDessert: Should I have Dessert
     - name:	What Should I do Today
+      entrypoint: true    
       actions:
         - sendText:  "Treat yourself! You deserve it.<audio src='https://s3.amazonaws.com/ask-soundlibrary/impacts/amzn_sfx_fireworks_01.mp3'/>" 
         - getInput:
+      next:
+        schouldIhaveDessert: Should I have Dessert
     - name:	Should I have Dessert
+      entrypoint: true
       actions:
         - sendText:  "Do it, you've earned it! <audio src='https://s3.amazonaws.com/ask-soundlibrary/human/amzn_sfx_crowd_applause_01.mp3'/>" 
         - getInput:
+      next:
+        schouldIhaveDessert: Should I have Dessert
     - name:	Is My Outfit Ok    
+      entrypoint: true
       actions:
         - sendText:  "You look like a perfect 10! <audio src='https://s3.amazonaws.com/ask-soundlibrary/foley/amzn_sfx_glasses_clink_01.mp3'/>" 
         - getInput:
+      next:
+        schouldIhaveDessert: Should I have Dessert
+    - name: Fallback
+      entrypoint: true
+      actions: 
+        - sendText: 'Oh you are so cool!' 
+        - getInput:
+      next:
+        schouldIhaveDessert: Should I have Dessert
     - name: Exit
       entrypoint: true
       actions: 
-        - sendText: 'Here is a bye-bye text' 
+        - sendText: 'Bye my bestie!' 
         
     - name: Help
       entrypoint: true
