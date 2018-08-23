@@ -29,10 +29,12 @@ intents:
     - "Should I eat dessert"
     - "Can I eat this sundae"
     - "Should I have dessert"
+  AMAZON.FallbackIntent:
+    - "blablabla"
   isMyOutfitOk:
     - "Does my outfit look okay"
     - "How does my outfit look"
-    - "is my outfeet ok"
+    - "is my outfit ok"
     - "is my hairdress good"
     - "how do I look like"
     - "What do you think of my outfit"
