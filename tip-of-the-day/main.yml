@@ -15,7 +15,7 @@ scenario:
         - set: " current_day_of_the_week = 'now' | date('N') - 1 " # The number of the current day in the week 1 for Monday, 7 for Sunday
         - set: " tips = [
                            { 'textToSpeech': 'This is the placeholder for any text you want to send on Monday.',
-                              cardTitle: 'Sunday Card',
+                              cardTitle: 'Monday Card',
                               cardText: 'You can also send the cards of course',
                               cardImage:  'https://bottalk.de/img/bottalk_landing_logo.png'
                            },
