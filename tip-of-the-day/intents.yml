@@ -9,5 +9,5 @@ intents:
   yes_next:
     - 'yes'
     - 'ok'
-    - 'yes, please'
+    - 'yes please'
     
