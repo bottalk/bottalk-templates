@@ -17,15 +17,13 @@ https://alexa.design
 https://developers.google.com/actions/
 
 Bottalk videos
-https://www.youtube.com/channel/UCjhb9TTDG0N7UiPz-UQYZqg
+- https://www.youtube.com/channel/UCjhb9TTDG0N7UiPz-UQYZqg
 
 For this skill we used
-https://en.wikiquote.org/wiki/English_proverbs 
-https://unsplash.com
-https://imgbb.com
-
-https://developer.amazon.com/docs/tools/icon-builder.html
-https://www.canva.com 
+- https://en.wikiquote.org/wiki/English_proverbs 
+- https://unsplash.com
+- https://imgbb.com
+- https://developer.amazon.com/docs/tools/icon-builder.html (an alternative tool https://www.canva.com)
 
 Create a skill and get perks from Amazon
-https://alexa.design/perks 
+- https://alexa.design/perks 
