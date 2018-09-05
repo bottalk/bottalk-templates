@@ -8,22 +8,26 @@
 
 ## Links used in the video manual
 
-Bottalk links
-https://bottalk.de
-https://github.com/bottalk/templates
+### Bottalk links
+Create an account for the Bottalk platform
+- https://bottalk.de
+- https://github.com/bottalk/templates
 
-Platforms
-https://alexa.design
-https://developers.google.com/actions/
+### Platforms
+You need to create accounts here
+- https://alexa.design
+- https://developers.google.com/actions/
 
-Bottalk videos
+### Bottalk videos
+Learn about Bottalk here
 - https://www.youtube.com/channel/UCjhb9TTDG0N7UiPz-UQYZqg
 
-For this skill we used
+### For this skill we used
+For this skill I used some proverbs, photos, hosting for photos to put them online and the Amazon tool for creating skill icons.
 - https://en.wikiquote.org/wiki/English_proverbs 
 - https://unsplash.com
 - https://imgbb.com
 - https://developer.amazon.com/docs/tools/icon-builder.html (an alternative tool https://www.canva.com)
 
-Create a skill and get perks from Amazon
+### Create a skill and get perks from Amazon
 - https://alexa.design/perks 
