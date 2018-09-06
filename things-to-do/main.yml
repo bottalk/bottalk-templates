@@ -3,7 +3,6 @@ include:
   - intents.yml
   - tests.yml
   - slots.yml
-  - tests.yml
 scenario:
   name: 'What To Do'
   locale: en-US
@@ -13,7 +12,7 @@ scenario:
     - 'Alexa, open what to do'
   steps:
 
-  # This is the start of our scenario
+    # This is the start of our scenario
     # If the step is put first - it will also be executed first
     - name: Initial step
       actions:
@@ -56,7 +55,7 @@ scenario:
         AMAZON.StopIntent: Exit
         AMAZON.HelpIntent: Help
 
-  # In this step we do some conditional logic
+    # In this step we do some conditional logic
     - name: Check If Category Is Movies
       # A user can initiate this step from ANYWHERE
       entrypoint: true
@@ -67,7 +66,6 @@ scenario:
       # WHEN the condition above is correct all of the following will be executed
       actions:
         - sendText: >
-            {{ category_name }} and {{ lastMessage }}
             Hm, let's see... The top movies on NetFlix this week are:
 
             The Dark Knight by Christopher Nolan,
@@ -79,8 +77,6 @@ scenario:
         - sendCard:
             title: Top Movies This Week
             text: >
-              {{ category_name }} and {{ lastMessage }}
-
               - The Dark Knight by Christopher Nolan {{ '\n' | raw }}
               - Star Wars: The Last Jedi by Rian Johnson {{ '\n' | raw }}
               - Set It Up by Claire Scanlon {{ '\n' | raw }}

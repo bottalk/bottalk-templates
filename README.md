@@ -205,7 +205,7 @@ And just keep building your amazing game from here!
 
 ## [Things To Do](https://github.com/bottalk/templates/tree/master/things-to-do)
 
-Are you at home and wondering what to do? What movie to watch? What errand to run? Or just want an idea for a healty family dinner? Then this scenario is for you!
+Are you at home and wondering what to do? What movie to watch? What errand to run? Or just want an idea for a healthy family dinner? Then this scenario is for you!
 
 Dialogue Example:
 
