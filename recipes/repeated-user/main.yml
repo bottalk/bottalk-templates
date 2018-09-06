@@ -1,0 +1,132 @@
+# This is a very basic demo skill. 
+# it checks whether you are a new or a repeated user
+# save your name and next time greets you with your name
+# then you can erase all information about you from the skill
+# it was made for Alexa. To use it with Google please change slots/intents
+---
+include:
+  - intents.yml
+  - slots.yml
+scenario:
+  name: 'Repeated user'
+  locale: en-US
+  category: EDUCATION_AND_REFERENCE
+  invocation: 'Repeated user'
+  examplePhrases:
+    - 'Alexa, open Repeated user'
+    
+ 
+# Be careful about spaces and do not use tabulation for indents
+# if you paste the code or write it yourself
+# name, entrypoint, actions, next : all of them should have 
+# the same number of  spaces in front them.
+ 
+  steps:
+  
+ # Here is the example of an eaiser implementation for repeated user.
+ # watch my video for detailed go through (TBD)
+ 
+ #  - name: Initial step variation
+ #    entrypoint: true
+ #    actions:
+ #     - sendText: > 
+ #        {% if repeatedUser == "1" %}repeated welcome back{% else %}new one welcome{% endif %}
+ 
+
+   - name: Initial step
+     actions:
+      - compareContext:
+          var: '{{repeatedUser}}'
+          is_equal: true
+     # we check whether repeatedUser variable is 1 and if yes -> it is a repeated user
+     # if no -> it is a new one
+     next:
+          'true': Initial step for repeated user
+          'false': Initial step for new user
+   - name: Initial step for new user
+     actions:
+     - set: 'repeatedUser = true'
+     # Randomize the output! Our ears like variety.
+     - sendText:  ' {{ random(["Hey New User!", "Hey New One!", "Hello, new comer!"]) }}' 
+     - sendText: >
+                 It's a good idea to distinguish whether people already used your skill. Give them more infos at the start!
+                 or ask them something! What is your name, for example?
+     - getInput:
+     next:
+        my_name_is: New user name
+        # These intents are required: AMAZON.CancelIntent,  AMAZON.StopIntent, AMAZON.HelpIntent
+        # to be certified by Amazon Alexa
+        AMAZON.CancelIntent: Exit
+        AMAZON.StopIntent: Exit
+        AMAZON.HelpIntent: Help
+        # Catch all is the possibility to handle unexpected user input. Don't forget to implement it in every
+        # step where you ask for the user input. Here maybe it is better not to exit but to ask again
+        # or clarify.
+        # maybe the user does not want to give his name to you.
+        catch_all: Exit
+   
+   # Every one likes their name :)
+   - name: New user name
+     actions:
+        - sendText: ' You have really cool name, {{name}}.'
+        - sendText:  '{{ random(["see you ", "bye "]) }}!' 
+        
+   - name: Initial step for repeated user
+     actions:
+        - sendText:  '{{ random(["Hey Repeated User ", "Hello again "]) }} {{name}}!' 
+        - sendText: "Happy to talk to you again. I don't need to tell you much. Should I forget you?"
+        # Set - getInput -> to get user response. If you end the step without it, the skill will finish its session with
+        # the last sendText.
+        - getInput:
+     next:
+        forget_me: Forget me
+        AMAZON.YesIntent: Forget me
+        # Catch all is the possibility to handle unexpected user input. Don't forget to implement it in every
+        # step where you ask for the user input 
+        catch_all: what
+   - name: what
+     actions:
+     - sendtext: 'what?'
+     - getInput:
+     next:
+       AMAZON.YesIntent: Forget me
+       AMAZON.NoIntent: Exit
+       forget_me: Forget me
+       catch_all: what
+   - name: Forget me
+     actions:
+     - setContext:
+         from: 0
+         to: 'repeatedUser'
+     - setContext:
+         from: ''
+         to: 'name'
+     - sendText:  '{{ random(["Now you are new one for me!", "You erased my memory!"]) }}' 
+     - sendText:  '{{ random(["see you ", "bye "]) }}!' 
+   # if you define
+   # entrypoint: true
+   # it makes possible to entry this step at any step of the interaction in the skill
+   # the activation works with the intent you define at any step before
+   # the next in the current step has priority and you can for example
+   # make the contextual help defining the next for the contextual help
+   # having in the same the global help
+   #
+   # you have also the possibility to make one shot interactions for your skill
+   # with entrypoint: true steps
+   # https://developer.amazon.com/blogs/alexa/post/a3149c48-b81b-4b89-8fc3-2d11ec28a3a3/effective-ways-to-write-sample-utterances
+   - name: Exit
+     entrypoint: true
+     actions: 
+     # Exit sends good bye message and the user is out of the interaction
+     - sendText:   '{{ random(["see you ", "bye "]) }}!'  
+   - name: Help
+     entrypoint: true
+     actions:
+        # For Amazon Alexa your help message should end with a question or a call of action.
+        # The sessions stays open, do not forget to put - getInput
+        # and handle the user responses
+        - sendText: 'Here is the help text, start it over?'
+        - getInput: 
+     next: 
+        AMAZON.YesIntent: Initial step for new user
+        catch_all: Exit
