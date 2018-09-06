@@ -2,7 +2,7 @@
 
 ## What is [BotTalk](https://bottalk.de)?
 
-[BotTalk](https://bottalk.de) is the 🥇 [award-winning platform](https://www.producthunt.com/posts/bottalk)(Product Hunt Product of the Day) that allows you to create complex Alexa Skills and Google Assistant Actions with simple markup language.
+[BotTalk](https://bottalk.de) is the 🥇 [award-winning platform](https://www.producthunt.com/posts/bottalk) (Product Hunt Product of the Day) that allows you to create complex Alexa Skills and Google Assistant Actions with simple markup language.
 
 Cutting-edge features:
 
@@ -218,11 +218,10 @@ Dialogue Example:
 > What are the top movies?
 
 > **Alexa**:  Hm, let's see... The top movies on NetFlix this week are:
-
-              The Dark Knight by Christopher Nolan,
-              Star Wars: The Last Jedi by Rian Johnson,
-              Set It Up by Claire Scanlon and
-              Ex Machina by Nicholas Stoller
+              - The Dark Knight by Christopher Nolan,
+              - Star Wars: The Last Jedi by Rian Johnson,
+              - Set It Up by Claire Scanlon and
+              - Ex Machina by Nicholas Stoller
 
 ## How to create your own What To Do Alexa Skill / Google Home Action?
 
