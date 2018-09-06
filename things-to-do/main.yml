@@ -136,8 +136,6 @@ scenario:
       when: 'category_name == "dinner" or lastMessage == "dinner_intent"'
       actions:
         - sendText: >
-            {{ category_name }} and {{ lastMessage }}
-
             Hm, let me check the top healthy family dinner ideas this week...
 
             Ribbony Prawns and Spaghetti,
