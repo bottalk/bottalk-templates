@@ -1,7 +1,9 @@
 ---
 include:
   - intents.yml
+  - tests.yml
   - slots.yml
+  - tests.yml
 scenario:
   name: 'What To Do'
   locale: en-US
@@ -11,63 +13,83 @@ scenario:
     - 'Alexa, open what to do'
   steps:
 
+  # This is the start of our scenario
+    # If the step is put first - it will also be executed first
     - name: Initial step
       actions:
+        # That's what Alexa will say to the user
         - sendText: >
-            Welcome to Things to Do! 
-            I can help you choose what to do next. Just pick a category. 
+            Welcome to Things to Do!
+            I can help you choose what to do next. Just pick a category.
             What will it be? Movies, Errands or Dinner?
-        - reprompt: >
-            In order for me to suggest what you might wanna do, 
-            I need you to choose the category first: Movies, Errands or Dinner?
+        # That's what we will show in Alexa Show or as Google Action Card
+        # Each card has a title, text and image.
         - sendCard:
             title: Things to Do
             text: >
-              Welcome to Things to Do! 
-              I can help you choose what to do next. Just pick a cateogory. 
+              Welcome to Things to Do!
+              I can help you choose what to do next. Just pick a cateogory.
               What will it be?  {{ '\n' | raw }} {{ '\n' | raw }}
-              
+
               - Movies {{ '\n' | raw }}
               - Errands {{ '\n' | raw }}
               - Dinner {{ '\n' | raw }}
-              
+
             image: 'https://bottalk.de/img/bottalk_landing_logo.png'
+        # When the user will not answer the following question correctly,
+        # Alexa / Google Home could politely ask again - or reprompt
+        - reprompt: >
+            In order for me to suggest what you might wanna do,
+            I need you to choose the category first: Movies, Errands or Dinner?
+        # Here we are waiting for the user to answer our question
         - getInput:
+      # In this secion we will link a user answer to the the next step
       next:
+        # If the user says some of the following:
+        # 'what movies should i watch', 'what to cook for dinner' or 'what are the top errands'
+        # then the next step is "Check If Category Is Movies" - where we will check what exactly the user wants
         movies_intent: Check If Category Is Movies
+        # If the user says a category name
         choose_category: Check If Category Is Movies
+        # The following are just the built-in intents - you don't need to touch them
         AMAZON.CancelIntent: Exit
         AMAZON.StopIntent: Exit
         AMAZON.HelpIntent: Help
 
+  # In this step we do some conditional logic
     - name: Check If Category Is Movies
+      # A user can initiate this step from ANYWHERE
       entrypoint: true
-      when: 'category_name == "movies" || lastMessage == "movies_intent"'
-      actions: 
+      # We first check if the user has chosen a category intent - and if so - if the category she chose is movies
+      # If not - then maybe the user invoked the movies_intent directly by saying something like 'what movies should i watch'
+      # To check that we use internal variable lastMessage which gives us the name of the last intent by the user
+      when: 'category_name == "movies" or lastMessage == "movies_intent"'
+      # WHEN the condition above is correct all of the following will be executed
+      actions:
         - sendText: >
             {{ category_name }} and {{ lastMessage }}
             Hm, let's see... The top movies on NetFlix this week are:
-            
-            The Dark Knight by Christopher Nolan, 
-            Star Wars: The Last Jedi by Rian Johnson, 
+
+            The Dark Knight by Christopher Nolan,
+            Star Wars: The Last Jedi by Rian Johnson,
             Set It Up by Claire Scanlon and
             Ex Machina by Nicholas Stoller
-            
+
             What do you want to do next?
         - sendCard:
             title: Top Movies This Week
             text: >
               {{ category_name }} and {{ lastMessage }}
-              
+
               - The Dark Knight by Christopher Nolan {{ '\n' | raw }}
               - Star Wars: The Last Jedi by Rian Johnson {{ '\n' | raw }}
               - Set It Up by Claire Scanlon {{ '\n' | raw }}
               - Ex Machina by Nicholas Stoller {{ '\n' | raw }} {{ '\n' | raw }}
-              
+
               Icon by http://www.designbolts.com
             image: 'https://smarthaustech.de/wp-content/uploads/2018/08/Film-icon.png'
         - reprompt: >
-            In order for me to suggest what you might wanna do, 
+            In order for me to suggest what you might wanna do,
             I need you to choose the category first: Movies, Errands or Dinner?
         - getInput:
       next:
@@ -75,23 +97,22 @@ scenario:
         errands_intent:  Check If Category Is Errands
         dinner_intent: Check If Category Is Dinner
         choose_category: Check If Category Is Movies
-        ok: Check If Category Is Errands
-      
+        # ELSE: The codition above was NOT correct - then we've got to move to the next step - where we make similar checks
+        else: Check If Category Is Errands
+
     - name: Check If Category Is Errands
       entrypoint: true
-      when: 'category_name == "errands" || lastMessage == "errands_intent"'
-      actions: 
+      when: 'category_name == "errands" or lastMessage == "errands_intent"'
+      actions:
         - sendText: >
-            {{ category_name }} and {{ lastMessage }}
-            
-            Ok, let's check what the other users has been up to this week... 
+            Ok, let's check what the other users has been up to this week...
             The top errands this week are:
-            
-            wash clothes, 
-            post office, 
-            pay bills and 
+
+            wash clothes,
+            post office,
+            pay bills and
             groceries shopping
-            
+
             What do you want to do next?
         - sendCard:
             title: Top Errands This Week
@@ -100,34 +121,34 @@ scenario:
               - Post office {{ '\n' | raw }}
               - Pay bills {{ '\n' | raw }}
               - Groceries shopping {{ '\n' | raw }} {{ '\n' | raw }}
-              
+
               Icon by http://www.kameleon.pics
             image: 'https://smarthaustech.de/wp-content/uploads/2018/08/Checklist-icon.png'
         - reprompt: >
-            In order for me to suggest what you might wanna do, 
+            In order for me to suggest what you might wanna do,
             I need you to choose the category first: Movies, Errands or Dinner?
         - getInput:
-      next: 
+      next:
         movies_intent: Check If Category Is Movies
         errands_intent:  Check If Category Is Errands
         dinner_intent: Check If Category Is Dinner
         choose_category: Check If Category Is Movies
-        ok: Check If Category Is Dinner
-      
+        else: Check If Category Is Dinner
+
     - name: Check If Category Is Dinner
       entrypoint: true
-      when: 'category_name == "dinner" || lastMessage == "dinner_intent"'
-      actions: 
+      when: 'category_name == "dinner" or lastMessage == "dinner_intent"'
+      actions:
         - sendText: >
             {{ category_name }} and {{ lastMessage }}
-            
+
             Hm, let me check the top healthy family dinner ideas this week...
-            
+
             Ribbony Prawns and Spaghetti,
             Rainbow Pepper Couscous,
             Chicken Paillards With Herb-Tomato Salad and
             Egg-and-Kimchi Rice Bowls
-            
+
              What do you want to do next?
         - sendCard:
             title: Top Healty Dinner Ideas
@@ -136,18 +157,18 @@ scenario:
               - Rainbow Pepper Couscous {{ '\n' | raw }}
               - Chicken Paillards With Herb-Tomato Salad {{ '\n' | raw }}
               - Egg-and-Kimchi Rice Bowls {{ '\n' | raw }} {{ '\n' | raw }}
-              
+
             image: 'https://smarthaustech.de/wp-content/uploads/2018/08/dish-2-icon.png'
         - reprompt: >
-            In order for me to suggest what you might wanna do, 
+            In order for me to suggest what you might wanna do,
             I need you to choose the category first: Movies, Errands or Dinner?
         - getInput:
-      next: 
+      next:
         movies_intent: Check If Category Is Movies
         errands_intent:  Check If Category Is Errands
         dinner_intent: Check If Category Is Dinner
         choose_category: Check If Category Is Movies
-        ok: Check If Category Is Movies            
+        else: Check If Category Is Movies
 
     - name: Exit
       entrypoint: true
@@ -158,7 +179,7 @@ scenario:
       entrypoint: true
       actions:
         - sendText: >
-            I can help you make better choices regarding the movies your watch, 
+            I can help you make better choices regarding the movies your watch,
             the dinner you cook or the errands you do. What will it be?
         - getInput:
       next:
