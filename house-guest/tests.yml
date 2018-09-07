@@ -1,10 +1,10 @@
 ---
 tests:
 
-  Happy Path:
+  Lucky Path:
 
     - say: start
-      wait:  Welcome to our home! Are you looking for something? Just ask!
+      wait: Welcome to our home! Are you looking for something?
 
     - say: where_is
       slots:
@@ -15,6 +15,3 @@ tests:
       slots:
         thing_to_do: 'turn on the air conditioner'
       wait: To turn on the air conditioner just use the remote on the wall.
-
-    - say: contact
-      wait: Andrew's number is <say-as interpret-as="telephone">5555555</say-as>.
