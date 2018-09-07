@@ -1,0 +1,20 @@
+---
+tests:
+
+  Happy Path:
+
+    - say: start
+      wait:  Welcome to our home! Are you looking for something? Just ask!
+
+    - say: where_is
+      slots:
+        thing_to_find: 'TV remote'
+      wait: The TV remote is on the couch - right next to the dog.
+
+    - say: how_do_i
+      slots:
+        thing_to_do: 'turn on the air conditioner'
+      wait: To turn on the air conditioner just use the remote on the wall.
+
+    - say: contact
+      wait: Andrew's number is <say-as interpret-as="telephone">5555555</say-as>.

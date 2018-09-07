@@ -2,6 +2,7 @@
 include:
   - intents.yml
   - slots.yml
+  - tests.yml
 scenario:
   name: 'House Guest'
   locale: en-US
