@@ -10,4 +10,4 @@ before_install:
   
 script:
   - pwd
-  - for D in *; do [ -d "${D}" ] && echo ${D} && docker run --rm -v "/home/travis/build/bottalk/templates/${D}:/app" bottalk/cli --dir /app/ test; done
+  - for D in *; do [ -d "${D}" ] && [ "${D}" != "recipes" ] && echo "Working with dir: ${D}" && docker run --rm -v "/home/travis/build/bottalk/templates/${D}:/app" bottalk/cli --dir /app/ test; done
