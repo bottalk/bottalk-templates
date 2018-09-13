@@ -2,7 +2,7 @@
 
 ## What is [BotTalk](https://bottalk.de)?
 
-[BotTalk](https://bottalk.de) is the 🥇 [award-winning platform](https://www.producthunt.com/posts/bottalk)(Product Hunt Product of the Day) that allows you to create complex Alexa Skills and Google Assistant Actions with simple markup language.
+[BotTalk](https://bottalk.de) is the 🥇 [award-winning platform](https://www.producthunt.com/posts/bottalk) (Product Hunt Product of the Day) that allows you to create complex Alexa Skills and Google Assistant Actions with simple markup language.
 
 Cutting-edge features:
 
@@ -202,3 +202,140 @@ first_question_answer_movie:
 ```
 
 And just keep building your amazing game from here!
+
+## [Things To Do](https://github.com/bottalk/templates/tree/master/things-to-do)
+
+Are you at home and wondering what to do? What movie to watch? What errand to run? Or just want an idea for a healthy family dinner? Then this scenario is for you!
+
+Dialogue Example:
+
+> Alexa, open What To Do
+
+> **Alexa**:  Welcome to Things to Do!
+              I can help you choose what to do next. Just pick a category.
+              What will it be? Movies, Errands or Dinner?
+
+> What are the top movies?
+
+> **Alexa**:  Hm, let's see... The top movies on NetFlix this week are:
+              - The Dark Knight by Christopher Nolan,
+              - Star Wars: The Last Jedi by Rian Johnson,
+              - Set It Up by Claire Scanlon and
+              - Ex Machina by Nicholas Stoller
+
+## How to create your own What To Do Alexa Skill / Google Home Action?
+
+1. To customize the scenario start with editing the first `Initial step`
+
+```yaml
+  # This is the start of our scenario
+  # If the step is put first - it will also be executed first
+  - name: Initial step
+    actions:
+      # That's what Alexa will say to the user
+      - sendText: >
+          Welcome to Things to Do!
+          I can help you choose what to do next. Just pick a category.
+          What will it be? Movies, Errands or Dinner?
+      # That's what we will show in Alexa Show or as Google Action Card
+      # Each card has a title, text and image.
+      - sendCard:
+          title: Things to Do
+          text: >
+            Welcome to Things to Do!
+            I can help you choose what to do next. Just pick a cateogory.
+            What will it be?  {{ '\n' | raw }} {{ '\n' | raw }}
+
+            - Movies {{ '\n' | raw }}
+            - Errands {{ '\n' | raw }}
+            - Dinner {{ '\n' | raw }}
+
+          image: 'https://bottalk.de/img/bottalk_landing_logo.png'
+      # When the user will not answer the following question correctly,
+      # Alexa / Google Home could politely ask again - or reprompt
+      - reprompt: >
+          In order for me to suggest what you might wanna do,
+          I need you to choose the category first: Movies, Errands or Dinner?
+      # Here we are waiting for the user to answer our question
+      - getInput:
+```
+
+2. Then Move on to the Intents secion and define a `choose_category` intent:
+
+```yaml
+choose_category:
+  - '{category_name}'
+```
+
+3. Define the categories in your Slots section:
+
+```yaml
+---
+slots:
+  category_name:
+    - 'movies'
+    - 'errands'
+    - 'dinner'
+```
+
+4. To make your skill more *human* introduce several intents that would *sound* like a human might say it in the free conversational manner:
+
+```yaml
+movies_intent:
+  - 'what movies should i watch'
+  - 'what are the top movies'
+  - 'best movies'
+
+dinner_intent:
+  - 'what to cook for dinner'
+  - 'what to cook today'
+  - 'dinner ideas'
+```
+
+5. Finally introduce `when` - `else` [Conditional Step](https://bottalk.de/docs/#/?id=decision-making-conditional-steps) to help your skill decide which TODO item to choose from:
+
+```yaml
+  # In this step we do some conditional logic
+  - name: Check If Category Is Movies
+    # A user can initiate this step from ANYWHERE
+    entrypoint: true
+    # We first check if the user has chosen a category intent - and if so - if the category she chose is movies
+    # If not - then maybe the user invoked the movies_intent directly by saying something like 'what movies should i watch'
+    # To check that we use internal variable lastMessage which gives us the name of the last intent by the user
+    when: 'category_name == "movies" or lastMessage == "movies_intent"'
+    # WHEN the condition above is correct all of the following will be executed
+    actions:
+      - sendText: >
+          {{ category_name }} and {{ lastMessage }}
+          Hm, let's see... The top movies on NetFlix this week are:
+
+          The Dark Knight by Christopher Nolan,
+          Star Wars: The Last Jedi by Rian Johnson,
+          Set It Up by Claire Scanlon and
+          Ex Machina by Nicholas Stoller
+
+          What do you want to do next?
+      - sendCard:
+          title: Top Movies This Week
+          text: >
+            {{ category_name }} and {{ lastMessage }}
+
+            - The Dark Knight by Christopher Nolan {{ '\n' | raw }}
+            - Star Wars: The Last Jedi by Rian Johnson {{ '\n' | raw }}
+            - Set It Up by Claire Scanlon {{ '\n' | raw }}
+            - Ex Machina by Nicholas Stoller {{ '\n' | raw }} {{ '\n' | raw }}
+
+            Icon by http://www.designbolts.com
+          image: 'https://smarthaustech.de/wp-content/uploads/2018/08/Film-icon.png'
+      - reprompt: >
+          In order for me to suggest what you might wanna do,
+          I need you to choose the category first: Movies, Errands or Dinner?
+      - getInput:
+    next:
+      movies_intent: Check If Category Is Movies
+      errands_intent:  Check If Category Is Errands
+      dinner_intent: Check If Category Is Dinner
+      choose_category: Check If Category Is Movies
+      # ELSE: The codition above was NOT correct - then we've got to move to the next step - where we make similar checks
+      else: Check If Category Is Errands
+```
