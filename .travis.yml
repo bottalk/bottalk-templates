@@ -9,4 +9,4 @@ before_install:
   - docker pull bottalk/cli
   
 script:
-  - for D in */; do docker run -v "./${D}:./" bottalk/cli test; done
+  - for D in */; do docker run --rm -v "./${D}:/root/app" bottalk/cli --dir /root/app test; done
