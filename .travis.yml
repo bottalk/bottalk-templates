@@ -9,4 +9,5 @@ before_install:
   - docker pull bottalk/cli
   
 script:
-  - for D in */; do docker run --rm -v "`pwd`/${D}:/root/app" bottalk/cli --dir /root/app test; done
+  - pwd
+  - for D in */; do docker run --rm -v "${D}:/root/app" bottalk/cli --dir /root/app test; done
