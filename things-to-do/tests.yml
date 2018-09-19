@@ -1,0 +1,22 @@
+---
+tests:
+
+  Happy Path:
+
+    - say: start
+      wait: Welcome to Things to Do!
+
+    - say: errands_intent
+      wait: >
+        Ok, let's check what the other users has been up to this week...
+        The top errands this week are:
+
+    - say: choose_category
+      slots:
+        category_name: 'movies'
+      wait: >
+        Hm, let's see... The top movies on NetFlix this week are:
+
+    - say: dinner_intent
+      wait: >
+        Hm, let me check the top healthy family dinner ideas this week...

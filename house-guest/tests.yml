@@ -1,0 +1,17 @@
+---
+tests:
+
+  Lucky Path:
+
+    - say: start
+      wait: Welcome to our home! Are you looking for something?
+
+    - say: where_is
+      slots:
+        thing_to_find: 'TV remote'
+      wait: The TV remote is on the couch - right next to the dog.
+
+    - say: how_do_i
+      slots:
+        thing_to_do: 'turn on the air conditioner'
+      wait: To turn on the air conditioner just use the remote on the wall.

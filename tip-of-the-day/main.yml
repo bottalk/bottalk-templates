@@ -2,6 +2,7 @@
 include:
   - intents.yml
   - slots.yml
+  - tests.yml
 scenario:
   invocation: 'Tip of the Day'
   name: 'BotTalk Tip of the Day'
@@ -22,56 +23,56 @@ scenario:
                            { 'textToSpeech': 'This is the placeholder for any text you want to send on Tuesday.',
                               cardTitle: 'Tuesday Card',
                               cardText: 'You can also send the cards of course',
-                              cardImage:  'https://bottalk.de/img/bottalk_landing_logo.png'                              
+                              cardImage:  'https://bottalk.de/img/bottalk_landing_logo.png'
                            },
-                           { 'textToSpeech': 'This is the placeholder for any text you want to send on Wednesday.', 
+                           { 'textToSpeech': 'This is the placeholder for any text you want to send on Wednesday.',
                               cardTitle: 'Wednesday Card',
                               cardText: 'You can also send the cards of course',
-                              cardImage:  'https://bottalk.de/img/bottalk_landing_logo.png'                              
+                              cardImage:  'https://bottalk.de/img/bottalk_landing_logo.png'
                            },
-                           { 'textToSpeech': 'This is the placeholder for any text you want to send on Thursday.', 
+                           { 'textToSpeech': 'This is the placeholder for any text you want to send on Thursday.',
                               cardTitle: 'Thursday Card',
                               cardText: 'You can also send the cards of course',
-                              cardImage:  'https://bottalk.de/img/bottalk_landing_logo.png'                              
+                              cardImage:  'https://bottalk.de/img/bottalk_landing_logo.png'
                            },
-                           { 'textToSpeech': 'This is the placeholder for any text you want to send on Friday.', 
+                           { 'textToSpeech': 'This is the placeholder for any text you want to send on Friday.',
                               cardTitle: 'Friday Card',
                               cardText: 'You can also send the cards of course',
-                              cardImage:  'https://bottalk.de/img/bottalk_landing_logo.png'                              
+                              cardImage:  'https://bottalk.de/img/bottalk_landing_logo.png'
                            },
-                           { 'textToSpeech': 'This is the placeholder for any text you want to send on Saturday.', 
+                           { 'textToSpeech': 'This is the placeholder for any text you want to send on Saturday.',
                               cardTitle: 'Saturday Card',
-                              cardText: 'You can also send the cards of course', 
-                              cardImage:  'https://bottalk.de/img/bottalk_landing_logo.png'                              
+                              cardText: 'You can also send the cards of course',
+                              cardImage:  'https://bottalk.de/img/bottalk_landing_logo.png'
                            },
-                           { 'textToSpeech': 'This is the placeholder for any text you want to send on Sunday.', 
+                           { 'textToSpeech': 'This is the placeholder for any text you want to send on Sunday.',
                               cardTitle: 'Sunday Card',
                               cardText: 'You can also send the cards of course',
-                              cardImage:  'https://bottalk.de/img/bottalk_landing_logo.png'                              
-                           }                           
-                        ] "  
+                              cardImage:  'https://bottalk.de/img/bottalk_landing_logo.png'
+                           }
+                        ] "
         - sendText: '{{ tips[current_day_of_the_week].textToSpeech }}'
         - sendCard:
             title: '{{ tips[current_day_of_the_week].cardTitle }}'
             text: '{{ tips[current_day_of_the_week].cardText }}'
             image: '{{ tips[current_day_of_the_week].cardImage }}'
-  
-      next: 
+
+      next:
         no_thanks: Exit
         AMAZON.CancelIntent: Exit
         AMAZON.StopIntent: Exit
         AMAZON.HelpIntent: help step
-        
+
     - name: Exit
       entrypoint: true
-      actions: 
-        - sendText: '{{ random(["Alrighty then, see ya!", "You know where to find me, bye!", "ok dokey!", "See ya"]) }}' 
-        
+      actions:
+        - sendText: '{{ random(["Alrighty then, see ya!", "You know where to find me, bye!", "ok dokey!", "See ya"]) }}'
+
     - name: help step
       entrypoint: true
       actions:
         - sendText: 'I am here to help! You can ask for next fact or exit anytime. Would you like to hear next fact?'
-        - getInput: 
-      next: 
+        - getInput:
+      next:
         yes_next: Initial step
-        no_thanks: Exit      
+        no_thanks: Exit
