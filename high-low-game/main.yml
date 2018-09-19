@@ -1,0 +1,177 @@
+---
+include:
+  - intents.yml
+  - slots.yml
+  - tests.yml
+scenario:
+  name: 'highlow'
+  locale: en-US
+  category: EDUCATION_AND_REFERENCE
+  invocation: 'highlow'
+  examplePhrases:
+    - 'Alexa, open highlow'
+  steps:
+  #todo: add tapered response
+  #todo: add repeated user
+  #todo: add counter for guesses
+  #todo: add top scores for guesses
+  #todo: add badges for using the skill
+    - name: Initial step
+   
+      actions:
+        - set: 'test = false' # if you set test to true, you will know the number at the start
+        - set: ' high_low = (myNumber > number_guess) '
+        - set:  'prompts = { "hello": ["hi","hello","hey"],
+                             "test": ["
+                                      This is a test. Here is my number %%myNumber%%
+                                      to make it easier for you."
+                                      ],
+                             "intro":["Here is High Low Game! Would you like to play?", "Let`s play a game. Yes?", 
+                                      "High Low is a great game, do you want to start?"],
+                             "start":[
+                                      "
+                                      I am thinking of a number 
+                                      between zero and one hundred, try to guess 
+                                      and I will tell you if it is higher or lower. 
+                                      Try saying a number.","
+                                      
+                                      Try to guess my number between zero and one hundred.
+                                      What is my number?","
+                                      
+                                      Lets play guessing game. I have a number  between zero and one hundred.
+                                      Guess it! Gimme the number!"
+                             
+                             ],
+                             "toolow":[
+                                       "Too low! Try again! What is the number?",
+                                       "My number is bigger! What do you think? Guess the number!",
+                                       "My number is bigger and you are low. Another guess! Give a number"
+                             
+                             ],
+                             "toohigh":[
+                                       "Too high! Try again!",
+                                       "My number is lower. Sorry. Guess again!",
+                                       "Haha. My number is lower. Another guess! Give a number"
+                             ],
+                             "youwon":[
+                                      "Yes! The number is %%myNumber%%. You won. You needed %%iteration%% tries to guess. Do you want to play again?",
+                                      "Great! Here you are. The %%myNumber%% is right. You needed %%iteration%% %%tries%% to guess. One more game?",
+                             ],
+                             "goodbye":[
+                                      "Come and play again with me next time. Have a nice day!",
+                                      "Thank you for the greatest game! Till later",
+                             ],
+                             "help":[
+                                      "
+                                      I am thinking of a number 
+                                      between zero and one hundred, try to guess 
+                                      and I will tell you if it is higher or lower. 
+                                      Say stop to exit or try saying a number between zero and one hundred. ",
+                             ],
+                             "secret":["Yes sire. My number is %%myNumber%%. You turn"],
+                           }'
+        - sendText: '{{random(prompts.intro)}}' 
+        - getInput:
+      next:
+        AMAZON.CancelIntent: Exit
+        AMAZON.StopIntent: Exit
+        AMAZON.HelpIntent: Help
+        yes_intent: LetSPlay
+        no_intent: Exit
+        secret_intent: Reveal the number
+        '*': Initial step
+        
+    - name: Reveal the number
+      actions:
+        - sendText: "{{ random(prompts.secret)|replace({'%%myNumber%%':myNumber }) }}"
+        - getInput:
+      next:
+        number_guess_intent: GuessCheck
+        '*':  GuessCheck
+      
+    - name: LetSPlay
+      actions:
+        - set: ' myNumber = random(100) '
+        - set: ' iteration = 0 '
+        - sendText:  >
+            {% if test %}
+              {{ random(prompts.test)|replace({'%%myNumber%%':myNumber }) }} {{random(prompts.hello)}}!  {{random(prompts.start)}} 
+            {% else %}
+               {{random(prompts.hello)}}!  {{random(prompts.start)}}             
+            {% endif %} 
+
+        - getInput:
+      next:
+        number_guess_intent: GuessCheck
+        secret_intent: Reveal the number
+        '*':  GuessCheck
+        
+    - name: GuessCheck
+      actions:
+        - set: ' iteration = iteration + 1 '
+        - compareContext:
+             var: '{{myNumber-number_guess}}'
+             is_equal: 0
+      next:
+        'true': You Won
+        'false': High low
+        
+    - name: High low
+      actions:
+        - set: ' high_low_comparison = (myNumber > number_guess) '
+        - compareContext:
+             var: '{{high_low_comparison}}'
+             is_equal: true
+      next:
+        'true': SayLow
+        'false': SayHigh
+        
+    - name: SayLow
+      actions:
+        - sendText: '{{random(prompts.toolow)}}' 
+        - getInput:
+      next: 
+        number_guess_intent: GuessCheck 
+        secret_intent: Reveal the number
+        '*':  GuessCheck
+        AMAZON.CancelIntent: Exit
+        AMAZON.StopIntent: Exit
+        AMAZON.HelpIntent: Help
+    - name: SayHigh
+      actions:
+        - sendText: '{{random(prompts.toohigh)}}' 
+        - getInput:
+      next: 
+        number_guess_intent: GuessCheck
+        secret_intent: Reveal the number
+        '*':  GuessCheck
+        AMAZON.CancelIntent: Exit
+        AMAZON.StopIntent: Exit
+        AMAZON.HelpIntent: Help
+    - name: You Won
+      actions:
+        - sendText: >
+           {% if (iteration == 1) %} 
+             {{random(prompts.youwon)|replace({"%%myNumber%%":myNumber, "%%iteration%%":iteration, "%%tries%%": "guess" }) }}
+           {% else %}
+             {{random(prompts.youwon)|replace({"%%myNumber%%":myNumber, "%%iteration%%":iteration, "%%tries%%": "tries" }) }} 
+           {% endif %} 
+        - getInput:
+      next:
+        yes_intent: LetSPlay
+        '*' : Exit
+    - name: Exit
+      entrypoint: true
+      actions: 
+        - sendText: '{{random(prompts.goodbye)}}' 
+       
+    - name: Help
+      entrypoint: true
+      actions:
+        - sendText: '{{random(prompts.help)}}' 
+        - getInput: 
+      next: 
+        number_guess_intent: GuessCheck
+        '*' : GuessCheck
+        
+        

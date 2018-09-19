@@ -1,0 +1,4 @@
+---
+slots:
+  # Built-in Slots
+  number_guess: '@bottalk.number'

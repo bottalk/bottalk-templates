@@ -1,0 +1,15 @@
+---
+tests:
+  Happy path test:
+   - say: start
+   - wait: (*)
+   - say: yes_intent
+   - wait: (*)
+   - say: number_guess_intent
+   - wait: (*)
+   - say: I guess that the number is 90
+   - wait: (*)
+   - say: secret_intent
+   - wait: (*)
+   - say: number_guess_intent   
+
