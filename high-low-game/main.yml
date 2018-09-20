@@ -16,16 +16,15 @@ scenario:
   #todo: add counter for guesses
   #todo: add top scores for guesses
   #todo: add badges for using the skill
-    - name: Initial step
-   
+    - name: Initial Step #define everything
       actions:
         - set: 'test = false' # if you set test to true, you will know the number at the start
-        - set: ' high_low = (myNumber > number_guess) '
         - set:  'prompts = { "hello": ["hi","hello","hey"],
                              "test": ["
                                       This is a test. Here is my number %%myNumber%%
                                       to make it easier for you."
                                       ],
+                             "intro_new_user":["Welcome to High Low Game! Thank you for choosing this skill. Would you like to play?"],
                              "intro":["Here is High Low Game! Would you like to play?", "Let`s play a game. Yes?", 
                                       "High Low is a great game, do you want to start?"],
                              "start":[
@@ -43,19 +42,27 @@ scenario:
                              
                              ],
                              "toolow":[
-                                       "Too low! Try again! What is the number?",
-                                       "My number is bigger! What do you think? Guess the number!",
-                                       "My number is bigger and you are low. Another guess! Give a number"
+                                       "%%yournumber%% is too low! Try again! What is the number?",
+                                       "My number is bigger than %%yournumber%%! What do you think? Guess the number!",
+                                       "My number is bigger and you are low. Another guess! Give a number or give up. What is your choice?"
                              
                              ],
+                             "gameinprogress": [
+                                       "It seems you didnt finish your previous game. Give me the number or give up! What do you prefer?",
+                                       "One game is in progress. Guess the number or give up! Your choice!",
+                             ],
                              "toohigh":[
-                                       "Too high! Try again!",
-                                       "My number is lower. Sorry. Guess again!",
-                                       "Haha. My number is lower. Another guess! Give a number"
+                                       "%%yournumber%% is too high! Try again!",
+                                       "My number is lower than yours %%yournumber%%. Sorry. Guess again!",
+                                       "Haha. My number is lower than %%yournumber%%. Another guess! Give a number or give up. What is your choice?"
                              ],
                              "youwon":[
                                       "Yes! The number is %%myNumber%%. You won. You needed %%iteration%% tries to guess. Do you want to play again?",
                                       "Great! Here you are. The %%myNumber%% is right. You needed %%iteration%% %%tries%% to guess. One more game?",
+                             ],
+                             "gaveup":[
+                                      "You gave up. But never give up again. One more game?",
+                                      "You gave up. I appreciate your choice. I am the best one. Another one game to play?"
                              ],
                              "goodbye":[
                                       "Come and play again with me next time. Have a nice day!",
@@ -70,7 +77,13 @@ scenario:
                              ],
                              "secret":["Yes sire. My number is %%myNumber%%. You turn"],
                            }'
-        - sendText: '{{random(prompts.intro)}}' 
+      next: Initial Step New User 
+        
+    - name: Initial Step New User
+      when: 'returning_user is not defined'
+      actions:
+        - set: 'returning_user = true'
+        - sendText: '{{random(prompts.intro_new_user)}}' 
         - getInput:
       next:
         AMAZON.CancelIntent: Exit
@@ -79,8 +92,19 @@ scenario:
         yes_intent: LetSPlay
         no_intent: Exit
         secret_intent: Reveal the number
-        '*': Initial step
-        
+        give_up: Give Up
+        else: Returning User Welcome Step
+ 
+    - name:  Returning User Welcome Step
+      when: 'returning_user == true'
+      actions:
+        - sendText: '{{random(prompts.intro)}}'
+        - getInput:
+      next: 
+        yes_intent: LetSPlay
+        no_intent: Exit
+        secret_intent: Reveal the number
+     
     - name: Reveal the number
       actions:
         - sendText: "{{ random(prompts.secret)|replace({'%%myNumber%%':myNumber }) }}"
@@ -88,9 +112,21 @@ scenario:
       next:
         number_guess_intent: GuessCheck
         '*':  GuessCheck
-      
-    - name: LetSPlay
+               
+    - name: Give Up
+      entrypoint: true    
       actions:
+        - set: "game_in_progress = false"
+        - sendText: "{{ random(prompts.gaveup) }}"
+        - getInput:
+      next:
+        yes_intent: LetSPlay
+        '*': Exit
+        
+    - name: LetSPlay
+      when: 'game_in_progress != true'
+      actions:
+        - set: "game_in_progress = true"
         - set: ' myNumber = random(100) '
         - set: ' iteration = 0 '
         - sendText:  >
@@ -105,6 +141,15 @@ scenario:
         number_guess_intent: GuessCheck
         secret_intent: Reveal the number
         '*':  GuessCheck
+        else: Game in Progress
+    
+    - name: Game in Progress
+      when: 'game_in_progress == true'
+      actions: 
+        - sendText:  '{{random(prompts.gameinprogress)}}'
+        - getInput:
+      next:
+        number_guess_intent: GuessCheck
         
     - name: GuessCheck
       actions:
@@ -128,28 +173,31 @@ scenario:
         
     - name: SayLow
       actions:
-        - sendText: '{{random(prompts.toolow)}}' 
+        - sendText: '{{ random(prompts.toolow)|replace({"%%yournumber%%":number_guess}) }}' 
         - getInput:
       next: 
         number_guess_intent: GuessCheck 
         secret_intent: Reveal the number
+        give_up: Give Up
         '*':  GuessCheck
         AMAZON.CancelIntent: Exit
         AMAZON.StopIntent: Exit
         AMAZON.HelpIntent: Help
     - name: SayHigh
       actions:
-        - sendText: '{{random(prompts.toohigh)}}' 
+        - sendText: '{{ random(prompts.toohigh)|replace({"%%yournumber%%":number_guess}) }}' 
         - getInput:
       next: 
         number_guess_intent: GuessCheck
         secret_intent: Reveal the number
+        give_up: Give Up
         '*':  GuessCheck
         AMAZON.CancelIntent: Exit
         AMAZON.StopIntent: Exit
         AMAZON.HelpIntent: Help
     - name: You Won
       actions:
+        - set: "game_in_progress = false"
         - sendText: >
            {% if (iteration == 1) %} 
              {{random(prompts.youwon)|replace({"%%myNumber%%":myNumber, "%%iteration%%":iteration, "%%tries%%": "guess" }) }}

@@ -30,4 +30,8 @@ For this skill I used some proverbs, photos, hosting for photos to put them onli
 - https://developer.amazon.com/docs/tools/icon-builder.html (an alternative tool https://www.canva.com)
 
 ### Create a skill and get perks from Amazon
+<<<<<<< HEAD
 - https://alexa.design/perks 
+=======
+- https://alexa.design/perks 
+>>>>>>> bottalk/master

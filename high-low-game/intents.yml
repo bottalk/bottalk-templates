@@ -26,6 +26,11 @@ intents:
     - 'My number {number_guess}'
     - 'it is {number_guess}'
     - 'how about {number_guess}'
+  give_up:
+    - 'yes I give up'
+    - 'give up'
+    - 'I give up'
+    - 'giving up'
   catch_all:
     - 'no yes go'
     - 'bla bla bla'
