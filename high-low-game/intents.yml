@@ -1,0 +1,48 @@
+---
+intents:
+  ok_great:
+    - 'OK'
+    - 'Great'
+  yes_intent:
+    - 'Yes please'
+    - 'yep'
+    - 'yes'
+    - 'yeah'
+    - 'ok'
+  no_intent:
+    - 'no thanks'
+    - 'nope'
+    - 'no'
+    - 'never'
+  secret_intent:
+    - 'bot tell me the number'
+    - 'talk to me'
+    - 'tell me your secret'
+  number_guess_intent:
+    - '{number_guess}'
+    - 'the number is {number_guess}'
+    - 'I guess that the number is {number_guess}'
+    - 'My number is {number_guess}'
+    - 'My number {number_guess}'
+    - 'it is {number_guess}'
+    - 'how about {number_guess}'
+  give_up:
+    - 'yes I give up'
+    - 'give up'
+    - 'I give up'
+    - 'giving up'
+  catch_all:
+    - 'no yes go'
+    - 'bla bla bla'
+    - 'fish big go draw'
+    - 'picture andreas drink'
+    - 'much coach trax'
+    - 'six van dan can tan'
+    - 'andrei kirill govoril till'
+    - 'the enda fow mow cow drill'
+    - 'no go do do no no do wow'
+    - 'go lo co mo co'
+    - 'talk me seen track mean'
+    - 'call wall mall goal tod'
+    - 'xonos monos golos'
+
