@@ -1,0 +1,7 @@
+---
+slots:
+  topic:
+    - turtle
+    - rabbit
+    - dog
+    - snake

@@ -1,0 +1,88 @@
+---
+include:
+  - intents.yml
+  - slots.yml
+  - tests.yml
+scenario:
+  name: 'Next When Example'
+  locale: en-US
+  category: EDUCATION_AND_REFERENCE
+  invocation: 'Next When Example'
+  examplePhrases:
+    - 'Alexa, open Next When Example'
+  steps:
+
+    - name: Initial step
+      actions:
+        - sendText: 'Welcome to the quiz! Do you want to study or answer a question?'
+        - getInput:
+      next:
+        # If a person chooses study intent - the Study Topic is the *next* step
+        study: Study Topic
+        # If a person chooses answer intent - the Answer Topic is the *next* step
+        answer: Answer Topic
+        # Some built-in Amazon intents
+        AMAZON.CancelIntent: Exit
+        AMAZON.StopIntent: Exit
+        AMAZON.HelpIntent: Help
+
+    - name: Study Topic
+      # This makes this step available form anywhere in the script
+      entrypoint: true
+      # Checking the conditions
+      # First we check if the last intent (lastMessage) was "study"
+      # Then we check if the topic slot has been filled
+      # OR
+      # The last intent was topic_intent - see the logic later...
+      when: '(lastMessage == "study" and topic is defined and topic != null) or lastMessage == "topic_intent"'
+      actions:
+        - sendText: "Let's learn more about {{topic}}... What's next?"
+        - getInput:
+      next:
+        # A user can choose the next topic
+        topic_intent: Study Topic
+        # The *when* conditions above has NOT been met - THEN - we move on to the Study Step
+        else: Study Step
+
+    - name: Study Step
+      entrypoint: true
+      actions:
+        - sendText: "You want to study, great! What topic whould you like to study?"
+        - getInput:
+      next:
+        # The user says what topic she want to study - execute the Study Topic step
+        topic_intent: Study Topic
+        else: Answer Step
+
+    - name: Answer Topic
+      entrypoint: true
+      when: 'lastMessage == "answer" and topic is defined and topic != null'
+      actions:
+        - sendText: "Let's see how well do you know {{topic}}... What's next?"
+        - getInput:
+      next:
+        topic_intent: Answer Topic
+        else: Answer Step
+
+    - name: Answer Step
+      entrypoint: true
+      actions:
+        - sendText: "{{topic}} You want to answer the questions. Perfect. What topic do you want for the quiz? "
+        - getInput:
+      next:
+        topic_intent: Answer Topic
+
+    - name: Exit
+      entrypoint: true
+      actions:
+        # Resetting the topic that was last studied or answered about. Otherwise BotTalk will remember it till the next session.
+        - set: "topic = null"
+        - sendText: 'Here is a bye-bye text'
+
+    - name: Help
+      entrypoint: true
+      actions:
+        - sendText: 'Here is the help text'
+        - getInput:
+      next:
+        ok_great: Initial step

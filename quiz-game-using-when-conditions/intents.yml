@@ -1,0 +1,19 @@
+---
+intents:
+  ok_great:
+    - 'OK'
+    - 'Great'
+  study:
+    - study
+    - I would like to study
+    - Study please
+    - Let me study first
+    - 'I would like to study about {topic}'
+  answer:
+    - answer
+    - I would like to answer the questions
+    - Bring it on
+    - Ready to answer
+    - 'Ready for answers about {topic}'
+  topic_intent:
+    - '{topic}'

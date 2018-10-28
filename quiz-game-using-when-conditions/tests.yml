@@ -1,0 +1,21 @@
+---
+tests:
+
+  Happy Path:
+
+    - say: start
+      wait: 'Welcome to the quiz! Do you want to study or answer a question?'
+
+    - say: study
+      wait: 'You want to study, great! What topic whould you like to study?'
+
+    - say: topic_intent
+      wait: "Let's learn more about {{topic}}... What's next?"
+
+    - say: answer
+      wait: "Let's see how well do you know {{topic}}... What's next?"
+
+    - say: study
+      slots:
+        topic: "rabbit"
+      wait: "Let's learn more about rabbit... What's next?"
