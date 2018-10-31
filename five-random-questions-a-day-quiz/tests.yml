@@ -1,0 +1,10 @@
+---
+tests:
+
+  Happy Path:
+
+    - say: start
+      await: Welcome to the worlds best Trivia Questions Game for Kids! Do you want to begin?
+
+    - say: ok_great
+      await: Something

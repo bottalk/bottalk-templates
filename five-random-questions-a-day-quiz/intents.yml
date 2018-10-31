@@ -1,0 +1,11 @@
+---
+intents:
+  ok_great:
+    - 'OK'
+    - 'Great'
+    - sure
+    - yes
+    - of course
+    - yeah
+  answer_intent:
+    - '{answer}'

@@ -1,0 +1,110 @@
+# The script idea comes from BotTalk Facebook community:
+#
+# Hi all. I’m looking at using the trivia-game template on Github for a Skill I am hoping to develop.
+# Nonetheless, in order to attract users to come back, I would like to vary the questions.
+# So, my plan is to populate it with 50+ questions and then when the user reaches 5 correct answers,
+# the Skill will finish. In order to vary this for users, I would like to pick the questions at random.
+---
+include:
+  - intents.yml
+  - slots.yml
+  - tests.yml
+scenario:
+  name: 'Five Questions Quiz'
+  locale: en-US
+  category: EDUCATION_AND_REFERENCE
+  invocation: 'Five Questions Quiz'
+  examplePhrases:
+    - 'Alexa, open Five Questions Quiz'
+  steps:
+
+
+    - name: Initial step
+      actions:
+        # Let's set some initial variables which will be the combination of our questions and answers
+        - set: >
+            qa = [
+              { 'question': 'What sweet food made by bees using nectar from flowers? Maple syrup? Jam? Honey?',
+                  'correct_answer': 'honey'
+                },
+                { 'question': 'Name the school that Harry Potter attended? Oxford? Hogwarts? Cambridge?',
+                  'correct_answer': 'hogwarts'
+                },
+                { 'question': 'Which country is home to the kangaroo? Australia? Austria? Africa?',
+                  'correct_answer': 'australia'
+                },
+                { 'question': 'Which country sent an Armada to attack Britain in 1588? USA? Spain? France?',
+                  'correct_answer': 'spain'
+                },
+                { 'question': 'Saint Patrick is the Patron Saint of which country? Ireland? UK? Italy?',
+                  'correct_answer': 'ireland'
+                },
+                { 'question': 'What is the top colour in a rainbow? Blue? Green? Red?',
+                  'correct_answer': 'red'
+                },
+                { 'question': 'How many colours are in a rainbow? 10? 7? 5?',
+                  'correct_answer': '7'
+                }
+            ]
+        # Sorry - but to set an initial score we need to first set it to 1 and then to 0 - it's a Bug. We're on it.
+        - set: 'score = 1'
+        - set: 'score = 0'
+        - sendText: 'Welcome to the worlds best Trivia Questions Game for Kids! Do you want to begin?'
+        - getInput:
+      next:
+        ok_great: Question
+        AMAZON.CancelIntent: Exit
+        AMAZON.StopIntent: Exit
+        AMAZON.HelpIntent: Help
+
+    - name: Question
+      when: "score < 5"
+      actions:
+        # Enter the total number of questions in the random function
+        # We will save the random number in the last_random_question variable
+        - set: 'last_random_question = random(7)'
+        # Then use this variable as a key to the array we set in the Initial Step
+        - sendText: '{{ qa[last_random_question].question }}'
+        - getInput:
+      next:
+        answer_intent: Correct Answer
+        else: Next Time
+
+    - name: Correct Answer
+      # Check if the answer was correct
+      when: 'answer | lower == qa[last_random_question].correct_answer | lower'
+      actions:
+        - set: 'score = score + 1'
+        - sendText: '{{ random(["Great!", "Perfect!", "Way to go!", "Nice!"]) }}'
+        - sendText: "Your current score is {{ score }}. Ready for the next question?"
+        - getInput:
+      next:
+        ok_great: Question
+        else: Incorrect Answer
+
+    - name: Incorrect Answer
+      actions:
+        - sendText: '{{ random(["Nope!", "No!", "Not quite!"]) }}'
+        - sendText: "Let's try again!"
+        - sendText: '{{ qa[last_random_question].question }}'
+        - getInput:
+      next:
+        answer_intent: Correct Answer
+
+    - name: Next Time
+      actions:
+        - sendText: 'You have already answered 5 questions correctly! Come back tomorrow to get the new question!'
+      next: Exit
+
+    - name: Exit
+      entrypoint: true
+      actions:
+        - sendText: 'See you tomorrow!'
+
+    - name: Help
+      entrypoint: true
+      actions:
+        - sendText: 'Here is the help text'
+        - getInput:
+      next:
+        ok_great: Initial step
