@@ -1,0 +1,17 @@
+---
+intents:
+  yes:
+    - 'yes'
+    - 'sure'
+    - 'of course'
+    - 'yeah'
+    - 'ok'
+    - 'great'
+  no:
+    - 'no'
+    - 'nope'
+  flavour_choice:
+    - 'I want {flavour} ice cream'
+    - '{flavour}'
+  scoops_choice:
+    - '{scoops}'

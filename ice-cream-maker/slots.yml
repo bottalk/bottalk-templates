@@ -1,0 +1,10 @@
+---
+slots:
+  # Custom slots
+  flavour:
+    - vanilla
+    - chocolate
+    - strawberry
+
+  # Built-in slots
+  scoops: '@bottalk.number'

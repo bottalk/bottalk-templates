@@ -1,0 +1,30 @@
+---
+tests:
+
+  Happy Path:
+
+    - say: start
+      wait: 'Hi! We have vanilla, chocolate and strawberry ice cream. Which one do you want?'
+
+    - say: flavour_choice
+      slots:
+        flavour: 'chocolate'
+      wait: 'Sorry, but chocolate is out of stock. You can choose vanilla or strawberry. Which one do you want?'
+
+    - say: flavour_choice
+      slots:
+        flavour: 'vanilla'
+      wait: '{{flavour}}. Nice choice. How many scoops?'
+
+    - say: scoops_choice
+      slots:
+        scoops: 10
+      wait: 'Oh, we can serve no more than 3 scoops of ice cream. So how many scoops do you want?'
+
+    - say: scoops_choice
+      slots:
+        scoops: 3
+      wait: 'Okay, you have ordered 3 scoops of vanilla ice cream, right?'
+
+    - say: yes
+      wait: 'Great! Your order number is 32. Thank you!'

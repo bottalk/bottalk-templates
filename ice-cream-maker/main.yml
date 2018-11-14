@@ -1,0 +1,82 @@
+---
+include:
+  - intents.yml
+  - slots.yml
+  - tests.yml
+scenario:
+  name: 'Ice Cream Maker'
+  locale: en-US
+  category: EDUCATION_AND_REFERENCE
+  invocation: 'Ice Cream Maker'
+  examplePhrases:
+    - 'Alexa, open Ice Cream Maker'
+  steps:
+
+    - name: Initial step
+      actions:
+        - sendText: 'Hi! We have vanilla, chocolate and strawberry ice cream. Which one do you want?'
+        - getInput:
+      next:
+        flavour_choice: Out Of Stock Check
+        AMAZON.CancelIntent: Exit
+        AMAZON.StopIntent: Exit
+        AMAZON.HelpIntent: Help
+
+    - name: Out Of Stock Check
+      entrypoint: true
+      when: 'flavour == "chocolate"'
+      actions:
+        - sendText: 'Sorry, but chocolate is out of stock. You can choose vanilla or strawberry. Which one do you want?'
+        - getInput:
+      next:
+        flavour_choice: Out Of Stock Check
+        else: In Stock
+
+    - name: In Stock
+      actions:
+        - sendText: '{{flavour}}. Nice choice. How many scoops?'
+        - getInput:
+      next:
+        scoops_choice: Limit To Three Check
+
+    - name: Limit To Three Check
+      when: 'scoops > 3'
+      actions:
+        - sendText: 'Oh, we can serve no more than 3 scoops of ice cream. So how many scoops do you want?'
+        - getInput:
+      next:
+        scoops_choice: Limit To Three Check
+        else: Confirm Choice
+
+    - name: Confirm Choice
+      actions:
+        - sendText: 'Okay, you have ordered {{ scoops }} scoops of vanilla ice cream, right?'
+        - getInput:
+      next:
+        yes: Yes Confirm
+        no: No Confirm
+
+    - name: Yes Confirm
+      actions:
+        - sendText: 'Great! Your order number is 32. Thank you!'
+      next: Exit
+
+    - name: No Confirm
+      actions:
+        - sendText: 'Okay, so what ice cream do you want - vanilla, chocolate or strawberry?'
+        - getInput:
+      next:
+        flavour_choice: Out Of Stock Check
+
+    - name: Exit
+      entrypoint: true
+      actions:
+        - sendText: 'See you next time!'
+
+    - name: Help
+      entrypoint: true
+      actions:
+        - sendText: 'Here is the help text'
+        - getInput:
+      next:
+        yes: Initial step
