@@ -1,0 +1,71 @@
+---
+include:
+  - intents.yml
+  - slots.yml
+  - tests.yml
+scenario:
+  invocation: 'Tip of the Day'
+  name: 'BotTalk Tip of the Day'
+  locale: en-US
+  category: EDUCATION_AND_REFERENCE
+  examplePhrases:
+    - 'Alexa, open Tip of the Day'
+  steps:
+    - name: Initial step
+      actions:
+        # Set the number of the current day of the week
+        # Monday will be 1, Tuesday 2 and so on
+        - set: "current_day_of_the_week = 'now' | date('N') - 1"
+
+        # Get your data from the Google Sheet
+        # How To Get This URL?
+        # 1. Open your sheet and copy ID of you sheet from the URL
+        #    https://docs.google.com/spreadsheets/d/1NHKXmF1nOemNdm8hsFC6Ss7UkSyOKxtpjZihMVh3lM8/edit#gid=0
+        #    The ID will be 1NHKXmF1nOemNdm8hsFC6Ss7UkSyOKxtpjZihMVh3lM8
+        # 2. In you sheet go to File -> Publish for Web and click Publish
+        # 3. Open this URL to get your JSON https://spreadsheets.google.com/feeds/list/PUT-YOUR-SHEET-ID-HERE/od6/public/values?alt=json
+        - getUrl:
+            url: 'https://spreadsheets.google.com/feeds/list/1NHKXmF1nOemNdm8hsFC6Ss7UkSyOKxtpjZihMVh3lM8/od6/public/values?alt=json'
+        # Get the content for the current day of the week and read it to the user
+        - sendText: '{{ urlResponse.feed.entry[current_day_of_the_week]["gsx$text"]["$t"] }}'
+        - sendCard:
+            title: '{{ urlResponse.feed.entry[current_day_of_the_week]["gsx$title"]["$t"] | raw  }}'
+            text: '{{ urlResponse.feed.entry[current_day_of_the_week]["gsx$text"]["$t"] | raw }}'
+            image: '{{ urlResponse.feed.entry[current_day_of_the_week]["gsx$image"]["$t"] }}'
+        # Optional: ask for random tip
+        - sendText: Do you want to hear the random tip of the day as well?
+        - getInput:
+      next:
+        ok_great: Random Tip
+        AMAZON.CancelIntent: Exit
+        AMAZON.StopIntent: Exit
+        AMAZON.HelpIntent: help step
+
+    - name: Random Tip
+      actions:
+        - getUrl:
+            url: 'https://spreadsheets.google.com/feeds/list/1NHKXmF1nOemNdm8hsFC6Ss7UkSyOKxtpjZihMVh3lM8/od6/public/values?alt=json'
+        # Get the content for the current day of the week and read it to the user
+        - sendText: '{{ urlResponse.feed.entry[random(6)]["gsx$text"]["$t"] }}'
+        - sendCard:
+            title: '{{ urlResponse.feed.entry[random(6)]["gsx$title"]["$t"] | raw }}'
+            text: '{{ urlResponse.feed.entry[random(6)]["gsx$text"]["$t"] | raw }}'
+            image: '{{ urlResponse.feed.entry[random(6)]["gsx$image"]["$t"] }}'
+        - sendText: Another random tip of the day?
+        - getInput:
+      next:
+        ok_great: Random Tip
+
+    - name: Exit
+      entrypoint: true
+      actions:
+        - sendText: '{{ random(["Alrighty then, see ya!", "You know where to find me, bye!", "ok dokey!", "See ya"]) }}'
+
+    - name: help step
+      entrypoint: true
+      actions:
+        - sendText: 'I am here to help! You can ask for next fact or exit anytime. Would you like to hear next fact?'
+        - getInput:
+      next:
+        ok_great: Initial step
+        no_thanks: Exit

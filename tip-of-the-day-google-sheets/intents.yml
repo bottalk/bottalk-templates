@@ -1,0 +1,9 @@
+---
+intents:
+  ok_great:
+    - 'OK'
+    - 'Great'
+    - 'yes'
+    - 'sure'
+    - 'of course'
+
