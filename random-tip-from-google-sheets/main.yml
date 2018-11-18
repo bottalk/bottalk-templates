@@ -1,0 +1,47 @@
+---
+include:
+  - intents.yml
+  - slots.yml
+  - tests.yml
+scenario:
+  name: 'Relationship Tips'
+  locale: 'en-US'
+  category: EDUCATION_AND_REFERENCE
+  invocation: 'Relationship Tips'
+  examplePhrases:
+    - 'Alexa, open Relationship Tips'
+  steps:
+
+    - name: Welcome step
+      actions:
+        - sendText: 'Hello and welcome to the relationship tips! '
+      next: Random fact
+
+    - name: Random fact
+      actions:
+        - getUrl:
+            url: 'https://spreadsheets.google.com/feeds/list/1VZyB0dQ71C1Ah4q7VavVI2JU_LiHbN-ejFlcXFONjHk/od6/public/values?alt=json'
+        - set: 'random_fact = urlResponse.feed.entry[random(10)]["gsx$tips"]["$t"]'
+        - sendText: '{{ random_fact }}'
+        - sendText: 'Do you want another random relationship fact? '
+        - getInput:
+      next:
+        yes: Random fact
+        no: Exit
+        AMAZON.CancelIntent: Exit
+        AMAZON.StopIntent: Exit
+        AMAZON.HelpIntent: Help
+
+
+    - name: Exit
+      entrypoint: true
+      actions:
+        - sendText: 'Here is a bye-bye text'
+
+    - name: Help
+      entrypoint: true
+      actions:
+        - sendText: 'You can hear the random facts in this skill. Do you want a random fact? '
+        - getInput:
+      next:
+        yes: Random fact

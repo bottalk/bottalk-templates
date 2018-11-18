@@ -37,6 +37,7 @@ scenario:
         - getInput:
       next:
         ok_great: Random Tip
+        no: Exit
         AMAZON.CancelIntent: Exit
         AMAZON.StopIntent: Exit
         AMAZON.HelpIntent: help step
@@ -46,15 +47,17 @@ scenario:
         - getUrl:
             url: 'https://spreadsheets.google.com/feeds/list/1NHKXmF1nOemNdm8hsFC6Ss7UkSyOKxtpjZihMVh3lM8/od6/public/values?alt=json'
         # Get the content for the current day of the week and read it to the user
-        - sendText: '{{ urlResponse.feed.entry[random(6)]["gsx$text"]["$t"] }}'
+        - set: 'random_number = random(6)'
+        - sendText: '{{ urlResponse.feed.entry[random_number]["gsx$text"]["$t"] }}'
         - sendCard:
-            title: '{{ urlResponse.feed.entry[random(6)]["gsx$title"]["$t"] | raw }}'
-            text: '{{ urlResponse.feed.entry[random(6)]["gsx$text"]["$t"] | raw }}'
-            image: '{{ urlResponse.feed.entry[random(6)]["gsx$image"]["$t"] }}'
+            title: '{{ urlResponse.feed.entry[random_number]["gsx$title"]["$t"] | raw }}'
+            text: '{{ urlResponse.feed.entry[random_number]["gsx$text"]["$t"] | raw }}'
+            image: '{{ urlResponse.feed.entry[random_number]["gsx$image"]["$t"] }}'
         - sendText: Another random tip of the day?
         - getInput:
       next:
         ok_great: Random Tip
+        no: Exit
 
     - name: Exit
       entrypoint: true

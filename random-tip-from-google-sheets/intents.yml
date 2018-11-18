@@ -1,11 +1,10 @@
 ---
 intents:
-  ok_great:
+  yes:
     - 'OK'
     - 'Great'
     - 'yes'
-    - 'sure'
-    - 'of course'
+    - 'yeah'
   no:
     - 'no'
-
+    - 'nope'
