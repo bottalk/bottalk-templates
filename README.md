@@ -23,6 +23,28 @@ We developed the Templates you can just copy and paste, adjust to your needs and
 
 Feel free to create your own - we're looking forward to your submissions!
 
+## [Audio Player - Sounds of Nature](https://github.com/bottalk/templates/tree/master/audio-player-sounds-of-nature)
+
+With this template you can build any skill that can do audio playback. We based this skill on the sounds of nature, that we took from https://www.zapsplat.com.
+
+Dialogue example:
+
+> Alexa, open Sounds of Nature
+
+> **Alexa**: Welcome to the most insightful movies trivia game in the whole wide world!
+            Do you want to start a game?
+> Ocean
+
+> **Alexa**: [Audio Player - Sound of Ocean] [On the Echo Show - Beautiful Template is Displayed]
+
+> Alexa, pause
+
+> **Alexa**: [Audio Player - Playback paused]
+
+> Alexa, resume
+
+> **Alexa**: [Audio Player - Resumes playback]
+
 ## [Tip of the Day](https://github.com/bottalk/templates/tree/master/tip-of-the-day)
 This template allows you to build Alexa Skills / Google Action with the daily information.
 Every day of the week users can learn something new from your Skill / Action: deals, news, currency rates etc.

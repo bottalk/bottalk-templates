@@ -1,0 +1,7 @@
+---
+intents:
+  ok_great:
+    - 'OK'
+    - 'Great'
+  sound_choice:
+    - '{sound}'
