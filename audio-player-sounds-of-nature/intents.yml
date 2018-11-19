@@ -1,7 +1,5 @@
 ---
 intents:
-  ok_great:
-    - 'OK'
-    - 'Great'
   sound_choice:
     - '{sound}'
+    - 'I want to hear {sound}'

@@ -68,4 +68,3 @@ scenario:
         - getInput:
       next:
         sound_choice: Play Sound
-        ok_great: Initial step

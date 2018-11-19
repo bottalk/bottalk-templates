@@ -45,6 +45,51 @@ Dialogue example:
 
 > **Alexa**: [Audio Player - Resumes playback]
 
+### How does it work?
+
+1. We greet the user and ask what kind of sound does she want to hear
+
+```yaml
+- name: Initial step
+  actions:
+    - sendText: 'Welcome to Sounds of Nature. Just say "ocean" or "wind" to play the calming sound. '
+    - getInput:
+  next:
+    sound_choice: Play Sound
+    AMAZON.PauseIntent: Pause
+    AMAZON.ResumeIntent: Resume
+    AMAZON.CancelIntent: Exit
+    AMAZON.StopIntent: Exit
+    AMAZON.HelpIntent: Help
+```
+
+2. We define what the user might say in the Intents section:
+
+```yaml
+sound_choice:
+  - '{sound}'
+  - 'I want to hear {sound}'
+```
+
+3. The actual *value* of the sound is defined as a custom slot in Slots section:
+
+```yaml
+sound:
+  - ocean
+  - wind
+```
+
+4. We use that slot's value (either ocean or wind - depending on what user has said) as a variable `{{ sound }}` in our Scenario file to play the passing mp3 file and display the right background:
+
+```yaml
+- alexa.play:
+    title: '{{ sound }}'
+    subtitle: 'just relax'
+    url: 'https://smarthaustech.de/wp-content/uploads/2018/11/{{ sound }}.mp3'
+    artwork: 'https://smarthaustech.de/wp-content/uploads/2018/11/bt-white.png'
+    background: 'https://smarthaustech.de/wp-content/uploads/2018/11/{{sound}}.jpg'
+```
+
 ## [Tip of the Day](https://github.com/bottalk/templates/tree/master/tip-of-the-day)
 This template allows you to build Alexa Skills / Google Action with the daily information.
 Every day of the week users can learn something new from your Skill / Action: deals, news, currency rates etc.
