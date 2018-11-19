@@ -38,7 +38,7 @@ scenario:
     - name: Pause
       input: true
       actions:
-        - alexe.stop:
+        - alexa.stop:
             input: true
 
     - name: Resume
@@ -57,7 +57,7 @@ scenario:
     - name: Exit
       entrypoint: true
       actions:
-        - alexe.stop:
+        - alexa.stop:
             input: true
         - sendText: 'See you next time. Just say "Alexa, open Sounds of Nature".'
 
