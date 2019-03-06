@@ -21,7 +21,8 @@ scenario:
       actions:
         - getUrl:
             url: 'https://spreadsheets.google.com/feeds/list/1VZyB0dQ71C1Ah4q7VavVI2JU_LiHbN-ejFlcXFONjHk/od6/public/values?alt=json'
-        - set: 'random_fact = urlResponse.feed.entry[random(10)]["gsx$tips"]["$t"]'
+        - set: 'random = urlResponse.feed.entry | length - 1'
+        - set: 'random_fact = urlResponse.feed.entry[random].title["$t"]'
         - sendText: '{{ random_fact }}'
         - sendText: 'Do you want another random relationship fact? '
         - getInput:
